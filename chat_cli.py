@@ -299,9 +299,6 @@ class SpotifyAgentCLI:
         song_artist_pattern = r'\d+\.\s*Song:.*Artist:'
         has_song_artist_format = bool(re.search(song_artist_pattern, response, re.IGNORECASE | re.MULTILINE | re.DOTALL))
         
-        # Debug logging
-        logger.debug(f"Recommendation detection - Indicators: {indicator_count}, Patterns: {pattern_matches}, Song/Artist format: {has_song_artist_format}")
-        
         # Return true if we have indicators AND (pattern matches OR song/artist format)
         return indicator_count >= 2 and (pattern_matches or has_song_artist_format)
     
@@ -398,18 +395,8 @@ class SpotifyAgentCLI:
                 self.display_response(response)
                 
                 # Check if this looks like a music recommendation and offer playlist creation
-                print(f"\n🔍 DEBUG: Checking if response contains recommendations...")
-                contains_recommendations = self._contains_music_recommendations(response)
-                has_spotify = self.spotify_client is not None
-                print(f"🔍 DEBUG: Contains recommendations: {contains_recommendations}")
-                print(f"🔍 DEBUG: Has Spotify client: {has_spotify}")
-                
-                if contains_recommendations and has_spotify:
+                if self._contains_music_recommendations(response) and self.spotify_client:
                     self._offer_playlist_creation(response)
-                elif contains_recommendations and not has_spotify:
-                    print("⚠️  Would offer playlist creation, but Spotify client is not available")
-                else:
-                    print("ℹ️  No music recommendations detected in this response")
                 
             except Exception as e:
                 print(f"\n❌ Unexpected error: {e}")

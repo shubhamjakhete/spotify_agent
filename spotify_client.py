@@ -386,20 +386,22 @@ class SpotifyClient:
         # 2. **"Song Name" by Artist Name**
         # 3. 1. Song Name - Artist Name
         # 4. • Song Name by Artist Name
-        # 5. Song: "Title" Artist: Name (NEW)
+        # 5. Song: "Title" Artist: Name
         patterns = [
-            # Pattern 1: "Song Name" by Artist Name or **"Song Name" by Artist Name**
-            r'(?:\*\*)?["\'""]([^"\'""]+)["\'""](?:\*\*)?\s+by\s+([^\n\-–—•*]+?)(?:\s*[\-–—]|\n|$)',
-            # Pattern 2: Number. Song Name - Artist Name or • Song Name - Artist Name  
-            r'(?:\d+\.|\•|\*)\s*([^-–—\n]+?)\s*[\-–—]\s*([^\n•*]+?)(?:\s*[\-–—]|\n|$)',
-            # Pattern 3: Number. Song Name by Artist Name
-            r'(?:\d+\.|\•|\*)\s*([^-–—\n]+?)\s+by\s+([^\n•*]+?)(?:\s*[\-–—]|\n|$)',
-            # Pattern 4: Song: "Title" \n Artist: Name (NEW - handle GPT's format)
-            r'Song:\s*["\'""]([^"\'""]+)["\'""].*?Artist:\s*([^\n•*🎵]+?)(?:\n|$)',
-            # Pattern 5: Number. Song: "Title" \n Artist: Name (NEW)
-            r'\d+\.\s*Song:\s*["\'""]([^"\'""]+)["\'""].*?Artist:\s*([^\n•*🎵]+?)(?:\n|$)',
-            # Pattern 6: Song: Title (without quotes) \n Artist: Name (NEW)
-            r'Song:\s*([^"\n]+?)(?:\n.*?)?Artist:\s*([^\n•*🎵]+?)(?:\n|$)'
+            # Pattern 1: **"Song Name"** by Artist Name (most common GPT format)
+            r'\d+\.\s*\*\*["\'""]([^"\'""]+)["\'""]?\*\*\s+by\s+([^\n\-–—•*]+?)(?:\s*\n|$)',
+            # Pattern 2: "Song Name" by Artist Name or **"Song Name" by Artist Name**
+            r'(?:\*\*)?["\'""]([^"\'""]+)["\'""](?:\*\*)?\s+by\s+([^\n\-–—•*\-]+?)(?:\s*[\-–—\n]|$)',
+            # Pattern 3: Number. Song Name - Artist Name or • Song Name - Artist Name  
+            r'(?:\d+\.|\•|\*)\s*([^-–—\n]+?)\s*[\-–—]\s*([^\n•*]+?)(?:\s*[\-–—\n]|$)',
+            # Pattern 4: Number. Song Name by Artist Name
+            r'(?:\d+\.|\•|\*)\s*([^-–—\n]+?)\s+by\s+([^\n•*\-]+?)(?:\s*[\-–—\n]|$)',
+            # Pattern 5: Song: "Title" \n Artist: Name (handle GPT's format)
+            r'Song:\s*["\'""]([^"\'""]+)["\'""].*?Artist:\s*([^\n•*🎵\-]+?)(?:\n|$)',
+            # Pattern 6: Number. Song: "Title" \n Artist: Name
+            r'\d+\.\s*Song:\s*["\'""]([^"\'""]+)["\'""].*?Artist:\s*([^\n•*🎵\-]+?)(?:\n|$)',
+            # Pattern 7: Song: Title (without quotes) \n Artist: Name
+            r'Song:\s*([^"\n]+?)(?:\n.*?)?Artist:\s*([^\n•*🎵\-]+?)(?:\n|$)'
         ]
         
         for pattern in patterns:
@@ -410,10 +412,19 @@ class SpotifyClient:
                 
                 # Clean up common artifacts
                 track_name = re.sub(r'^[\d\.\)\]\}\-–—\s]+', '', track_name).strip()
-                artist_name = re.sub(r'[\-–—\s]*\([^)]*\).*$', '', artist_name).strip()
                 
-                # Remove emojis and extra text after artist name
-                artist_name = re.sub(r'🎵.*$', '', artist_name).strip()
+                # Enhanced artist name cleanup - stop at common separators
+                artist_name = re.sub(r'[\-–—]\s.*$', '', artist_name).strip()  # Stop at dash + description
+                artist_name = re.sub(r'\s+by\s.*$', '', artist_name).strip()  # Remove duplicate "by" patterns
+                artist_name = re.sub(r'\s*\([^)]*\).*$', '', artist_name).strip()  # Remove parentheses
+                artist_name = re.sub(r'🎵.*$', '', artist_name).strip()  # Remove emojis and text after
+                artist_name = re.sub(r'\n.*$', '', artist_name).strip()  # Stop at newlines
+                
+                # Remove common words that leak from descriptions
+                stop_words = ['A powerful', 'An anthemic', 'A soulful', 'A feel', 'A classic', 'by A', 'by An']
+                for word in stop_words:
+                    if word in artist_name:
+                        artist_name = artist_name.split(word)[0].strip()
                 
                 if track_name and artist_name and len(track_name) > 1 and len(artist_name) > 1:
                     # Avoid duplicates
