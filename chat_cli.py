@@ -266,18 +266,24 @@ class SpotifyAgentCLI:
         Returns:
             bool: True if response contains song recommendations
         """
+        import re
+        
         # Keywords that suggest music recommendations
         recommendation_indicators = [
             'song', 'track', 'music', 'artist', 'album', 'recommend', 
             'suggest', 'playlist', 'listen', 'by ', 'ft.', 'feat.'
         ]
         
-        # Patterns that suggest a list of songs
+        # Patterns that suggest a list of songs - updated to handle more formats
         list_patterns = [
-            r'\d+\.\s*["\'""].*["\'""].*by\s+',  # 1. "Song" by Artist
-            r'\d+\.\s*.*\s*-\s*.*',              # 1. Song - Artist
-            r'•\s*.*by\s+.*',                     # • Song by Artist
-            r'\*\*.*by\s+.*\*\*'                 # **Song by Artist**
+            r'\d+\.\s*["\'""].*["\'""].*by\s+',     # 1. "Song" by Artist
+            r'\d+\.\s*.*\s*-\s*.*',                 # 1. Song - Artist
+            r'•\s*.*by\s+.*',                        # • Song by Artist
+            r'\*\*.*by\s+.*\*\*',                   # **Song by Artist**
+            r'\d+\.\s*Song:\s*["\'""].*["\'""]',    # 1. Song: "Title"
+            r'\d+\.\s*Song:\s*.*\n.*Artist:\s*.*',  # Multi-line Song:/Artist: format
+            r'Song:\s*["\'""].*["\'""].*Artist:',   # Song: "Title" Artist: Name
+            r'\d+\.\s*["\'""].*["\'""].*\n.*Artist:', # 1. "Song"\n   Artist: Name
         ]
         
         response_lower = response.lower()
@@ -286,11 +292,18 @@ class SpotifyAgentCLI:
         indicator_count = sum(1 for indicator in recommendation_indicators if indicator in response_lower)
         
         # Check for list patterns
-        import re
-        pattern_matches = any(re.search(pattern, response, re.IGNORECASE) for pattern in list_patterns)
+        pattern_matches = any(re.search(pattern, response, re.IGNORECASE | re.MULTILINE) for pattern in list_patterns)
         
-        # Must have both indicators and patterns to be considered a recommendation
-        return indicator_count >= 2 and pattern_matches
+        # Also check for the specific format we see in GPT responses
+        # Look for numbered lists containing both "Song:" and "Artist:" 
+        song_artist_pattern = r'\d+\.\s*Song:.*Artist:'
+        has_song_artist_format = bool(re.search(song_artist_pattern, response, re.IGNORECASE | re.MULTILINE | re.DOTALL))
+        
+        # Debug logging
+        logger.debug(f"Recommendation detection - Indicators: {indicator_count}, Patterns: {pattern_matches}, Song/Artist format: {has_song_artist_format}")
+        
+        # Return true if we have indicators AND (pattern matches OR song/artist format)
+        return indicator_count >= 2 and (pattern_matches or has_song_artist_format)
     
     def _offer_playlist_creation(self, gpt_response: str):
         """
@@ -385,8 +398,18 @@ class SpotifyAgentCLI:
                 self.display_response(response)
                 
                 # Check if this looks like a music recommendation and offer playlist creation
-                if self._contains_music_recommendations(response) and self.spotify_client:
+                print(f"\n🔍 DEBUG: Checking if response contains recommendations...")
+                contains_recommendations = self._contains_music_recommendations(response)
+                has_spotify = self.spotify_client is not None
+                print(f"🔍 DEBUG: Contains recommendations: {contains_recommendations}")
+                print(f"🔍 DEBUG: Has Spotify client: {has_spotify}")
+                
+                if contains_recommendations and has_spotify:
                     self._offer_playlist_creation(response)
+                elif contains_recommendations and not has_spotify:
+                    print("⚠️  Would offer playlist creation, but Spotify client is not available")
+                else:
+                    print("ℹ️  No music recommendations detected in this response")
                 
             except Exception as e:
                 print(f"\n❌ Unexpected error: {e}")
