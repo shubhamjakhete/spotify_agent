@@ -44,7 +44,7 @@ class SpotifyClient:
             self.client_id = os.getenv('SPOTIFY_CLIENT_ID')
             self.client_secret = os.getenv('SPOTIFY_CLIENT_SECRET')
             self.redirect_uri = os.getenv('SPOTIFY_REDIRECT_URI', 'http://localhost:8888/callback')
-            self.scopes = os.getenv('SPOTIFY_SCOPES', 'user-read-private user-read-email')
+            self.scopes = os.getenv('SPOTIFY_SCOPES', 'user-read-private user-read-email user-read-recently-played user-top-read playlist-modify-public playlist-modify-private')
             
             logger.debug(f"Loaded credentials - Client ID: {'*' * len(self.client_id) if self.client_id else 'None'}")
             logger.debug(f"Redirect URI: {self.redirect_uri}")
@@ -250,6 +250,173 @@ class SpotifyClient:
         except Exception as e:
             logger.error(f"Failed to get top artists: {e}")
             return []
+    
+    def create_recommendation_playlist_from_text(self, gpt_text: str) -> Dict[str, Any]:
+        """
+        Create a Spotify playlist from GPT recommendation text
+        
+        Args:
+            gpt_text (str): GPT response containing song and artist recommendations
+            
+        Returns:
+            Dict[str, Any]: Playlist metadata including name, URL, and track count
+        """
+        import re
+        from datetime import datetime
+        
+        try:
+            log_function_entry(logger, "create_recommendation_playlist_from_text")
+            logger.info(f"Creating playlist from GPT text: {gpt_text[:100]}...")
+            
+            # Parse track information from GPT text
+            tracks_info = self._parse_tracks_from_text(gpt_text)
+            if not tracks_info:
+                logger.warning("No tracks found in GPT text")
+                return {
+                    'success': False,
+                    'error': 'No tracks found in the recommendation text',
+                    'tracks_added': 0
+                }
+            
+            logger.info(f"Parsed {len(tracks_info)} tracks from text")
+            
+            # Get current user info
+            user = self.sp.current_user()
+            user_id = user['id']
+            
+            # Create playlist name with current date
+            playlist_name = f"AI Recommendations - {datetime.now().strftime('%Y-%m-%d')}"
+            
+            # Create the playlist
+            playlist = self.sp.user_playlist_create(
+                user=user_id,
+                name=playlist_name,
+                public=False,  # Private by default
+                description="AI-generated music recommendations from Spotify Agent"
+            )
+            
+            logger.info(f"Created playlist: {playlist_name} (ID: {playlist['id']})")
+            
+            # Search for tracks and collect URIs
+            track_uris = []
+            successful_tracks = []
+            failed_tracks = []
+            
+            for track_info in tracks_info:
+                try:
+                    # Search for the track
+                    query = f"track:{track_info['track']} artist:{track_info['artist']}"
+                    results = self.sp.search(q=query, type='track', limit=1)
+                    
+                    if results['tracks']['items']:
+                        track = results['tracks']['items'][0]
+                        track_uris.append(track['uri'])
+                        successful_tracks.append({
+                            'searched': f"{track_info['track']} by {track_info['artist']}",
+                            'found': f"{track['name']} by {track['artists'][0]['name']}"
+                        })
+                        logger.debug(f"Found track: {track['name']} by {track['artists'][0]['name']}")
+                    else:
+                        failed_tracks.append(f"{track_info['track']} by {track_info['artist']}")
+                        logger.warning(f"Track not found: {track_info['track']} by {track_info['artist']}")
+                        
+                except Exception as e:
+                    failed_tracks.append(f"{track_info['track']} by {track_info['artist']}")
+                    logger.error(f"Error searching for track {track_info['track']}: {e}")
+            
+            # Add tracks to playlist
+            if track_uris:
+                # Spotify allows max 100 tracks per request
+                for i in range(0, len(track_uris), 100):
+                    batch = track_uris[i:i+100]
+                    self.sp.playlist_add_items(playlist['id'], batch)
+                
+                logger.info(f"Added {len(track_uris)} tracks to playlist {playlist_name}")
+            
+            # Log results
+            log_data_summary(logger, "playlist_creation", {
+                'total_tracks_parsed': len(tracks_info),
+                'successful_tracks': len(successful_tracks),
+                'failed_tracks': len(failed_tracks),
+                'playlist_id': playlist['id']
+            })
+            
+            result = {
+                'success': True,
+                'playlist_name': playlist_name,
+                'playlist_url': playlist['external_urls']['spotify'],
+                'playlist_id': playlist['id'],
+                'tracks_added': len(track_uris),
+                'total_tracks_parsed': len(tracks_info),
+                'successful_tracks': successful_tracks,
+                'failed_tracks': failed_tracks
+            }
+            
+            log_function_exit(logger, "create_recommendation_playlist_from_text", 
+                            f"Created playlist with {len(track_uris)} tracks", True)
+            return result
+            
+        except Exception as e:
+            log_error_with_context(logger, e, {
+                'gpt_text_length': len(gpt_text) if gpt_text else 0
+            }, "create_recommendation_playlist_from_text")
+            log_function_exit(logger, "create_recommendation_playlist_from_text", None, False)
+            return {
+                'success': False,
+                'error': str(e),
+                'tracks_added': 0
+            }
+    
+    def _parse_tracks_from_text(self, text: str) -> List[Dict[str, str]]:
+        """
+        Parse track and artist information from GPT recommendation text
+        
+        Args:
+            text (str): Text containing track recommendations
+            
+        Returns:
+            List[Dict[str, str]]: List of dictionaries with 'track' and 'artist' keys
+        """
+        import re
+        
+        tracks = []
+        
+        # Pattern to match various formats:
+        # 1. "Song Name" by Artist Name
+        # 2. **"Song Name" by Artist Name**
+        # 3. 1. Song Name - Artist Name
+        # 4. • Song Name by Artist Name
+        patterns = [
+            # Pattern 1: "Song Name" by Artist Name or **"Song Name" by Artist Name**
+            r'(?:\*\*)?["\'""]([^"\'""]+)["\'""](?:\*\*)?\s+by\s+([^\n\-–—•*]+?)(?:\s*[\-–—]|\n|$)',
+            # Pattern 2: Number. Song Name - Artist Name or • Song Name - Artist Name  
+            r'(?:\d+\.|\•|\*)\s*([^-–—\n]+?)\s*[\-–—]\s*([^\n•*]+?)(?:\s*[\-–—]|\n|$)',
+            # Pattern 3: Number. Song Name by Artist Name
+            r'(?:\d+\.|\•|\*)\s*([^-–—\n]+?)\s+by\s+([^\n•*]+?)(?:\s*[\-–—]|\n|$)'
+        ]
+        
+        for pattern in patterns:
+            matches = re.findall(pattern, text, re.IGNORECASE | re.MULTILINE)
+            for match in matches:
+                track_name = match[0].strip().strip('*').strip()
+                artist_name = match[1].strip().strip('*').strip()
+                
+                # Clean up common artifacts
+                track_name = re.sub(r'^[\d\.\)\]\}\-–—\s]+', '', track_name).strip()
+                artist_name = re.sub(r'[\-–—\s]*\([^)]*\).*$', '', artist_name).strip()
+                
+                if track_name and artist_name and len(track_name) > 1 and len(artist_name) > 1:
+                    # Avoid duplicates
+                    track_key = f"{track_name.lower()}|{artist_name.lower()}"
+                    if not any(f"{t['track'].lower()}|{t['artist'].lower()}" == track_key for t in tracks):
+                        tracks.append({
+                            'track': track_name,
+                            'artist': artist_name
+                        })
+                        logger.debug(f"Parsed track: {track_name} by {artist_name}")
+        
+        logger.info(f"Parsed {len(tracks)} unique tracks from text")
+        return tracks
 
 
 def main():

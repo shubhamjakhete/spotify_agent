@@ -256,6 +256,109 @@ class SpotifyAgentCLI:
         print(f"\n🎯 AI Assistant: {response}\n")
         print("-" * 50)
     
+    def _contains_music_recommendations(self, response: str) -> bool:
+        """
+        Check if the response contains music recommendations
+        
+        Args:
+            response (str): GPT response text
+            
+        Returns:
+            bool: True if response contains song recommendations
+        """
+        # Keywords that suggest music recommendations
+        recommendation_indicators = [
+            'song', 'track', 'music', 'artist', 'album', 'recommend', 
+            'suggest', 'playlist', 'listen', 'by ', 'ft.', 'feat.'
+        ]
+        
+        # Patterns that suggest a list of songs
+        list_patterns = [
+            r'\d+\.\s*["\'""].*["\'""].*by\s+',  # 1. "Song" by Artist
+            r'\d+\.\s*.*\s*-\s*.*',              # 1. Song - Artist
+            r'•\s*.*by\s+.*',                     # • Song by Artist
+            r'\*\*.*by\s+.*\*\*'                 # **Song by Artist**
+        ]
+        
+        response_lower = response.lower()
+        
+        # Check for recommendation indicators
+        indicator_count = sum(1 for indicator in recommendation_indicators if indicator in response_lower)
+        
+        # Check for list patterns
+        import re
+        pattern_matches = any(re.search(pattern, response, re.IGNORECASE) for pattern in list_patterns)
+        
+        # Must have both indicators and patterns to be considered a recommendation
+        return indicator_count >= 2 and pattern_matches
+    
+    def _offer_playlist_creation(self, gpt_response: str):
+        """
+        Offer to create a playlist from the GPT recommendations
+        
+        Args:
+            gpt_response (str): The GPT response containing music recommendations
+        """
+        try:
+            # Ask user if they want a playlist
+            print("\n🎶 Would you like me to create a Spotify playlist with these songs for you?")
+            playlist_input = input("🎵 You: ").strip()
+            
+            # Check for affirmative response
+            if self._is_affirmative_response(playlist_input):
+                print("\n🎵 Creating your playlist...")
+                
+                # Create playlist using Spotify client
+                result = self.spotify_client.create_recommendation_playlist_from_text(gpt_response)
+                
+                if result['success']:
+                    print(f"\n✅ Playlist created: '{result['playlist_name']}' with {result['tracks_added']} tracks!")
+                    print(f"🎧 Listen here: {result['playlist_url']}")
+                    
+                    if result['failed_tracks']:
+                        print(f"\n⚠️  Note: {len(result['failed_tracks'])} tracks couldn't be found on Spotify:")
+                        for track in result['failed_tracks'][:3]:  # Show first 3
+                            print(f"   • {track}")
+                        if len(result['failed_tracks']) > 3:
+                            print(f"   ... and {len(result['failed_tracks']) - 3} more")
+                    
+                    logger.info(f"Successfully created playlist: {result['playlist_name']}")
+                    
+                else:
+                    print(f"\n❌ Sorry, I couldn't create the playlist: {result.get('error', 'Unknown error')}")
+                    logger.error(f"Playlist creation failed: {result.get('error', 'Unknown error')}")
+                    
+            else:
+                print("\n👍 No problem! Let me know if you'd like recommendations for anything else.")
+                
+        except Exception as e:
+            print(f"\n❌ Error creating playlist: {e}")
+            logger.error(f"Error in playlist creation flow: {e}")
+    
+    def _is_affirmative_response(self, response: str) -> bool:
+        """
+        Check if user response is affirmative for playlist creation
+        
+        Args:
+            response (str): User's response
+            
+        Returns:
+            bool: True if response is affirmative
+        """
+        affirmative_words = [
+            'yes', 'yeah', 'yep', 'sure', 'ok', 'okay', 'please', 'go ahead', 
+            'do it', 'create', 'make', 'add', 'absolutely', 'definitely', 'of course'
+        ]
+        
+        response_lower = response.lower().strip()
+        
+        # Direct matches
+        if response_lower in affirmative_words:
+            return True
+            
+        # Partial matches
+        return any(word in response_lower for word in affirmative_words)
+    
     def run_chat_loop(self):
         """Main chat loop"""
         while True:
@@ -280,6 +383,10 @@ class SpotifyAgentCLI:
                 
                 # Display response
                 self.display_response(response)
+                
+                # Check if this looks like a music recommendation and offer playlist creation
+                if self._contains_music_recommendations(response) and self.spotify_client:
+                    self._offer_playlist_creation(response)
                 
             except Exception as e:
                 print(f"\n❌ Unexpected error: {e}")
