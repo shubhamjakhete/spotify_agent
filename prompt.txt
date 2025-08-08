@@ -1,0 +1,134 @@
+# User Prompts/Requests Given to AI Assistant
+
+## =============================================================================
+## PROJECT SETUP AND REQUIREMENTS
+## =============================================================================
+
+### 1. Initial Project Request
+"under readme file, create a software requirement document for the project Spotify Agent. goal is: to specifies the functional and non-functional requirements for the Spotify Agent system. The purpose of this system is to build a smart assistant that can access a user's Spotify account, analyze listening habits, and generate personalized music recommendations."
+
+### 2. Technology Stack Update
+"under READme file, we are using openai api for building recommendation engine."
+
+### 3. Application Type Clarification
+"it is not a web based application. its a chat based cli based application. everything will happen on terminal"
+
+### 4. Technology Stack Specification
+"we will be using python, tensorflow, pytorch, spotipy and no nodeJS and its dependencies"
+
+## =============================================================================
+## ENVIRONMENT AND CONFIGURATION
+## =============================================================================
+
+### 5. Environment File Creation
+"create a .env file and i will add all the api keys needed fro the project"
+
+## =============================================================================
+## SPOTIFY CLIENT DEVELOPMENT
+## =============================================================================
+
+### 6. Spotify Client Creation
+"create a spotify_client.py file, use the created .env file to authenticate with Spotify using OAuth. Print the logged-in user's display name and email to confirm connection. Use the spotipy and python-dotenv libraries."
+
+## =============================================================================
+## OPENAI CLIENT DEVELOPMENT
+## =============================================================================
+
+### 7. OpenAI Client Creation
+"lets integrate openai now. craete openai.py file which 
+use the model gpt-3.5-turbo,
+loads the api key from env file,
+initialize openai client using openai sdk (use openai>=1.0.0),
+include a method chat(prompt: str) -> str that sends a user prompt to GPT-3.5 and returns a response,
+Add a test main() block where I give a sample prompt like: 'I like Pritam and Arijit Singh, Find me 5 similar ones'.
+
+the expected output should be:
+User: Can you suggest 5 songs I might like if I enjoy music by Pritam and Arijit Singh?
+GPT: Sure! Here are 5 songs you might like:
+1. Tum Mile – Pritam, KK
+2. Raabta – Arijit Singh
+3. Kabira – Pritam, Tochi Raina
+..."
+
+## =============================================================================
+## TROUBLESHOOTING AND DEBUGGING
+## =============================================================================
+
+### 8. Virtual Environment Setup
+"command to create venv"
+
+### 9. Dependency Installation Issue
+"pip install openai>=1.0.0
+zsh: 1.0.0 not found"
+
+### 10. File Naming Conflict
+"what error this is?" (referring to ImportError with openai.py)
+
+### 11. Scope Error Analysis
+"what error this is?" (referring to 403 Insufficient client scope error)
+
+### 12. Syntax Error Fix
+"if i have to send multiple mood parameter then it should be in []"
+
+## =============================================================================
+## CODE OPTIMIZATION AND CLEANUP
+## =============================================================================
+
+### 13. Test Simplification
+"for openai_client keep only music recommendation test"
+
+### 14. Function Cleanup
+"comment out all the uneccesary function which are not used and keep only the remaining part."
+
+### 15. Structured Test Removal
+"why do we need structured recommendation test?"
+
+### 16. Function Commenting
+"comment out the structured recommendation test in the openai_client for now."
+
+### 17. Function Documentation
+"what are the other functions are added in the openai_client?"
+
+## =============================================================================
+## DOCUMENTATION
+## =============================================================================
+
+### 19. Prompt Documentation
+"can you write all the propmts i gave through the project in prompt.txt"
+
+### 20. Clarification Request
+"i meant the prompt input i gave you"
+
+## =============================================================================
+## OBSERVATIONS AND ANALYSIS
+## =============================================================================
+
+### 21. AI Behavior Analysis
+"whats the observation. it reads arijit singh properly but not pritam?"
+
+## =============================================================================
+## NOTES
+## =============================================================================
+
+### Key Themes in User Requests:
+1. **Project Setup**: Requirements, technology stack, application type
+2. **Environment Configuration**: API keys, dependencies, virtual environment
+3. **Client Development**: Spotify and OpenAI integration
+4. **Troubleshooting**: Errors, conflicts, syntax issues
+5. **Code Optimization**: Cleanup, simplification, documentation
+6. **Analysis**: AI behavior, observations, improvements
+
+### Development Flow:
+1. Started with requirements documentation
+2. Moved to environment setup
+3. Built individual clients (Spotify, OpenAI)
+4. Encountered and resolved various issues
+5. Optimized and cleaned up code
+6. Documented the entire process
+
+### Common Issues Encountered:
+1. File naming conflicts (openai.py vs openai library)
+2. Shell interpretation of special characters (>=)
+3. OAuth scope permissions
+4. Syntax errors in function calls
+5. Import conflicts and dependencies
