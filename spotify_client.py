@@ -181,7 +181,7 @@ class SpotifyClient:
             logger.error(f"Spotify connection test failed: {e}")
             return False
     
-    def get_recent_tracks(self, limit: int = 10) -> list:
+    def get_recent_tracks(self, limit: int = 30) -> list:
         """
         Get user's recently played tracks
         

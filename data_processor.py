@@ -32,7 +32,7 @@ class DataProcessor:
         self.sound_capsule = {}
         self.library = {}
         self.processed_data = {}
-        
+    
     def load_all_data(self) -> Dict[str, Any]:
         """
         Load all JSON files from the data folder
@@ -55,15 +55,102 @@ class DataProcessor:
             self.library = self._load_library()
             logger.info(f"Loaded library with {len(self.library.get('tracks', []))} tracks and {len(self.library.get('albums', []))} albums")
             
-            # Process and clean all data
-            self.processed_data = self._process_all_data()
-            
-            logger.info("All data loaded and processed successfully")
-            return self.processed_data
+            logger.info("All data loaded successfully")
+            return {
+                'streaming_history': self.streaming_history,
+                'sound_capsule': self.sound_capsule,
+                'library': self.library
+            }
             
         except Exception as e:
             logger.error(f"Error loading data: {e}")
             raise
+    
+    def load_2024_chunk(self, limit: int = 30) -> Dict[str, str]:
+        """
+        Load and format 2024 listening data for GPT processing.
+        Only includes essential data: track names, artist names, and genres.
+        
+        Args:
+            limit: Maximum number of items to include per category
+            
+        Returns:
+            Dictionary with formatted strings for recent tracks, top artists, and genres
+        """
+        logger.info("Loading 2024 chunk for GPT processing...")
+        
+        try:
+            # Get 2024 data
+            data_2024 = self._get_2024_essential_data()
+            
+            # Format each component
+            formatted_data = {
+                'recent_tracks': self._format_2024_tracks_simple(data_2024['tracks'], limit),
+                'top_artists': self._format_2024_artists_simple(data_2024['artists'], limit),
+                'top_genres': self._format_2024_genres_simple(data_2024['genres'], limit)
+            }
+            
+            return formatted_data
+            
+        except Exception as e:
+            logger.error(f"Error loading 2024 chunk: {e}")
+            return {'recent_tracks': '', 'top_artists': '', 'top_genres': ''}
+    
+    def _get_2024_essential_data(self) -> Dict[str, List[str]]:
+        """
+        Extract essential 2024 data from all sources
+        """
+        data_2024 = {
+            'tracks': [],
+            'artists': [],
+            'genres': []
+        }
+        
+        # Get tracks and artists from streaming history
+        if self.streaming_history:
+            logger.info(f"Processing {len(self.streaming_history)} streaming history records")
+            records_2024 = 0
+            for record in self.streaming_history:
+                if record['timestamp'].year == 2024:
+                    records_2024 += 1
+                    track_str = f"{record['trackName']} by {record['artistName']}"
+                    if track_str not in data_2024['tracks']:
+                        data_2024['tracks'].append(track_str)
+                    if record['artistName'] not in data_2024['artists']:
+                        data_2024['artists'].append(record['artistName'])
+            logger.info(f"Found {records_2024} records from 2024")
+        
+        # Get genres from sound capsule
+        if self.sound_capsule.get('stats'):
+            logger.info(f"Processing {len(self.sound_capsule['stats'])} monthly stats")
+            months_2024 = 0
+            for stat in self.sound_capsule['stats']:
+                # Assuming date format is YYYY-MM
+                if stat.get('date', '').startswith('2024'):
+                    months_2024 += 1
+                    for genre in stat.get('topGenres', []):
+                        genre_name = genre['name']
+                        if genre_name not in data_2024['genres']:
+                            data_2024['genres'].append(genre_name)
+            logger.info(f"Found {months_2024} months from 2024")
+        
+        logger.info(f"Extracted {len(data_2024['tracks'])} unique tracks, {len(data_2024['artists'])} unique artists, and {len(data_2024['genres'])} unique genres from 2024")
+        return data_2024
+    
+    def _format_2024_tracks_simple(self, tracks: List[str], limit: int) -> str:
+        """Format tracks as comma-separated string"""
+        top_tracks = tracks[:limit] if limit > 0 else tracks
+        return ", ".join(top_tracks)
+    
+    def _format_2024_artists_simple(self, artists: List[str], limit: int) -> str:
+        """Format artists as comma-separated string"""
+        top_artists = artists[:limit] if limit > 0 else artists
+        return ", ".join(top_artists)
+    
+    def _format_2024_genres_simple(self, genres: List[str], limit: int) -> str:
+        """Format genres as comma-separated string"""
+        top_genres = genres[:limit] if limit > 0 else genres
+        return ", ".join(top_genres)
     
     def _load_streaming_history(self) -> List[Dict[str, Any]]:
         """
@@ -495,763 +582,6 @@ class DataProcessor:
         name = re.sub(r'\s+', ' ', name).strip()
         
         return name
-    
-    def _process_all_data(self) -> Dict[str, Any]:
-        """
-        Process all loaded data and create comprehensive analysis
-        
-        Returns:
-            Dictionary containing processed and analyzed data
-        """
-        logger.info("Processing all data...")
-        
-        processed_data = {
-            'streaming_history': self.streaming_history,
-            'sound_capsule': self.sound_capsule,
-            'library': self.library,
-            'analysis': self._analyze_data(),
-            'duplicates': self._detect_duplicates(),
-            'summary': self._generate_summary()
-        }
-        
-        return processed_data
-    
-    def _analyze_data(self) -> Dict[str, Any]:
-        """
-        Analyze the loaded data for patterns and insights
-        
-        Returns:
-            Dictionary containing analysis results
-        """
-        analysis = {
-            'time_periods': self._analyze_time_periods(),
-            'top_artists': self._analyze_top_artists(),
-            'top_tracks': self._analyze_top_tracks(),
-            'genres': self._analyze_genres(),
-            'listening_patterns': self._analyze_listening_patterns(),
-            'engagement_metrics': self._analyze_engagement()
-        }
-        
-        return analysis
-    
-    def _analyze_time_periods(self) -> Dict[str, Any]:
-        """
-        Analyze listening patterns across different time periods
-        
-        Returns:
-            Time period analysis
-        """
-        if not self.streaming_history:
-            return {}
-        
-        # Group by month
-        monthly_stats = defaultdict(lambda: {
-            'count': 0,
-            'total_seconds': 0,
-            'artists': Counter(),
-            'tracks': Counter(),
-            'avg_session_length': 0
-        })
-        
-        for record in self.streaming_history:
-            month_key = record['timestamp'].strftime("%Y-%m")
-            monthly_stats[month_key]['count'] += 1
-            monthly_stats[month_key]['total_seconds'] += record['secondsPlayed']
-            monthly_stats[month_key]['artists'][record['artistName']] += 1
-            monthly_stats[month_key]['tracks'][record['trackName']] += 1
-        
-        # Calculate averages
-        for month in monthly_stats:
-            count = monthly_stats[month]['count']
-            if count > 0:
-                monthly_stats[month]['avg_session_length'] = monthly_stats[month]['total_seconds'] / count
-        
-        return dict(monthly_stats)
-    
-    def _analyze_top_artists(self) -> Dict[str, Any]:
-        """
-        Analyze top artists across all data sources
-        
-        Returns:
-            Top artists analysis
-        """
-        artist_stats = defaultdict(lambda: {
-            'stream_count': 0,
-            'total_seconds': 0,
-            'tracks': set(),
-            'avg_engagement': 0
-        })
-        
-        # From streaming history
-        for record in self.streaming_history:
-            artist = record['artistName']
-            artist_stats[artist]['stream_count'] += 1
-            artist_stats[artist]['total_seconds'] += record['secondsPlayed']
-            artist_stats[artist]['tracks'].add(record['trackName'])
-        
-        # From sound capsule
-        for stat in self.sound_capsule.get('stats', []):
-            for artist in stat.get('topArtists', []):
-                artist_name = artist['name']
-                artist_stats[artist_name]['stream_count'] += artist.get('streamCount', 0)
-                artist_stats[artist_name]['total_seconds'] += artist.get('secondsPlayed', 0)
-        
-        # Calculate engagement metrics
-        for artist in artist_stats:
-            if artist_stats[artist]['stream_count'] > 0:
-                artist_stats[artist]['avg_engagement'] = artist_stats[artist]['total_seconds'] / artist_stats[artist]['stream_count']
-                artist_stats[artist]['tracks'] = list(artist_stats[artist]['tracks'])
-        
-        # Sort by total seconds
-        sorted_artists = sorted(artist_stats.items(), key=lambda x: x[1]['total_seconds'], reverse=True)
-        
-        return {
-            'by_total_time': sorted_artists[:50],
-            'by_stream_count': sorted(artist_stats.items(), key=lambda x: x[1]['stream_count'], reverse=True)[:50],
-            'by_engagement': sorted(artist_stats.items(), key=lambda x: x[1]['avg_engagement'], reverse=True)[:50]
-        }
-    
-    def _analyze_top_tracks(self) -> Dict[str, Any]:
-        """
-        Analyze top tracks across all data sources
-        
-        Returns:
-            Top tracks analysis
-        """
-        track_stats = defaultdict(lambda: {
-            'stream_count': 0,
-            'total_seconds': 0,
-            'artists': set(),
-            'avg_engagement': 0
-        })
-        
-        # From streaming history
-        for record in self.streaming_history:
-            track = record['trackName']
-            track_stats[track]['stream_count'] += 1
-            track_stats[track]['total_seconds'] += record['secondsPlayed']
-            track_stats[track]['artists'].add(record['artistName'])
-        
-        # From sound capsule
-        for stat in self.sound_capsule.get('stats', []):
-            for track in stat.get('topTracks', []):
-                track_name = track['name']
-                track_stats[track_name]['stream_count'] += track.get('streamCount', 0)
-                track_stats[track_name]['total_seconds'] += track.get('secondsPlayed', 0)
-        
-        # Calculate engagement metrics
-        for track in track_stats:
-            if track_stats[track]['stream_count'] > 0:
-                track_stats[track]['avg_engagement'] = track_stats[track]['total_seconds'] / track_stats[track]['stream_count']
-                track_stats[track]['artists'] = list(track_stats[track]['artists'])
-        
-        # Sort by total seconds
-        sorted_tracks = sorted(track_stats.items(), key=lambda x: x[1]['total_seconds'], reverse=True)
-        
-        return {
-            'by_total_time': sorted_tracks[:50],
-            'by_stream_count': sorted(track_stats.items(), key=lambda x: x[1]['stream_count'], reverse=True)[:50],
-            'by_engagement': sorted(track_stats.items(), key=lambda x: x[1]['avg_engagement'], reverse=True)[:50]
-        }
-    
-    def _analyze_genres(self) -> Dict[str, Any]:
-        """
-        Analyze genre preferences from sound capsule data
-        
-        Returns:
-            Genre analysis
-        """
-        genre_stats = defaultdict(lambda: {
-            'stream_count': 0,
-            'total_seconds': 0,
-            'months_active': set(),
-            'avg_engagement': 0,
-            'peak_month': '',
-            'peak_streams': 0
-        })
-        
-        # From sound capsule
-        for stat in self.sound_capsule.get('stats', []):
-            month = stat.get('date', '')
-            for genre in stat.get('topGenres', []):
-                genre_name = genre['name']
-                stream_count = genre.get('streamCount', 0)
-                seconds_played = genre.get('secondsPlayed', 0)
-                
-                genre_stats[genre_name]['stream_count'] += stream_count
-                genre_stats[genre_name]['total_seconds'] += seconds_played
-                
-                if month:
-                    genre_stats[genre_name]['months_active'].add(month)
-                
-                # Track peak month for each genre
-                if stream_count > genre_stats[genre_name]['peak_streams']:
-                    genre_stats[genre_name]['peak_streams'] = stream_count
-                    genre_stats[genre_name]['peak_month'] = month
-        
-        # Calculate additional metrics
-        for genre in genre_stats:
-            if genre_stats[genre]['stream_count'] > 0:
-                genre_stats[genre]['avg_engagement'] = genre_stats[genre]['total_seconds'] / genre_stats[genre]['stream_count']
-            genre_stats[genre]['months_active'] = list(genre_stats[genre]['months_active'])
-            genre_stats[genre]['consistency_score'] = len(genre_stats[genre]['months_active'])
-        
-        # Sort by different metrics
-        sorted_by_time = sorted(genre_stats.items(), key=lambda x: x[1]['total_seconds'], reverse=True)
-        sorted_by_streams = sorted(genre_stats.items(), key=lambda x: x[1]['stream_count'], reverse=True)
-        sorted_by_consistency = sorted(genre_stats.items(), key=lambda x: x[1]['consistency_score'], reverse=True)
-        sorted_by_engagement = sorted(genre_stats.items(), key=lambda x: x[1]['avg_engagement'], reverse=True)
-        
-        # Genre evolution analysis
-        genre_evolution = self._analyze_genre_evolution()
-        
-        # Genre combinations analysis
-        genre_combinations = self._analyze_genre_combinations()
-        
-        return {
-            'by_total_time': sorted_by_time[:20],
-            'by_stream_count': sorted_by_streams[:20],
-            'by_consistency': sorted_by_consistency[:20],
-            'by_engagement': sorted_by_engagement[:20],
-            'evolution': genre_evolution,
-            'combinations': genre_combinations,
-            'summary': {
-                'total_genres': len(genre_stats),
-                'most_consistent_genre': sorted_by_consistency[0][0] if sorted_by_consistency else None,
-                'most_engaged_genre': sorted_by_engagement[0][0] if sorted_by_engagement else None,
-                'total_genre_streams': sum(genre_stats[g]['stream_count'] for g in genre_stats),
-                'total_genre_time': sum(genre_stats[g]['total_seconds'] for g in genre_stats)
-            }
-        }
-    
-    def _analyze_listening_patterns(self) -> Dict[str, Any]:
-        """
-        Analyze listening patterns and behaviors
-        
-        Returns:
-            Listening patterns analysis
-        """
-        if not self.streaming_history:
-            return {}
-        
-        patterns = {
-            'time_of_day': defaultdict(int),
-            'day_of_week': defaultdict(int),
-            'session_lengths': [],
-            'skip_rates': defaultdict(int)
-        }
-        
-        for record in self.streaming_history:
-            timestamp = record['timestamp']
-            
-            # Time of day analysis
-            hour = timestamp.hour
-            if 6 <= hour < 12:
-                patterns['time_of_day']['morning'] += 1
-            elif 12 <= hour < 17:
-                patterns['time_of_day']['afternoon'] += 1
-            elif 17 <= hour < 22:
-                patterns['time_of_day']['evening'] += 1
-            else:
-                patterns['time_of_day']['night'] += 1
-            
-            # Day of week analysis
-            day_name = timestamp.strftime('%A').lower()
-            patterns['day_of_week'][day_name] += 1
-            
-            # Session length analysis
-            patterns['session_lengths'].append(record['secondsPlayed'])
-            
-            # Skip rate analysis (tracks played for less than 30 seconds)
-            if record['secondsPlayed'] < 30:
-                patterns['skip_rates'][record['artistName']] += 1
-        
-        # Calculate averages
-        if patterns['session_lengths']:
-            patterns['avg_session_length'] = sum(patterns['session_lengths']) / len(patterns['session_lengths'])
-        
-        return dict(patterns)
-    
-    def _analyze_genre_evolution(self) -> Dict[str, Any]:
-        """
-        Analyze how genre preferences evolved over time
-        
-        Returns:
-            Genre evolution analysis
-        """
-        if not self.sound_capsule.get('stats'):
-            return {}
-        
-        # Sort stats by date
-        sorted_stats = sorted(self.sound_capsule['stats'], key=lambda x: x.get('date', ''))
-        
-        evolution = {
-            'monthly_genres': {},
-            'emerging_genres': [],
-            'declining_genres': [],
-            'stable_genres': []
-        }
-        
-        # Track genres by month
-        all_genres = set()
-        monthly_genre_data = {}
-        
-        for stat in sorted_stats:
-            month = stat.get('date', '')
-            if not month:
-                continue
-                
-            monthly_genres = {}
-            for genre in stat.get('topGenres', []):
-                genre_name = genre['name']
-                all_genres.add(genre_name)
-                monthly_genres[genre_name] = {
-                    'stream_count': genre.get('streamCount', 0),
-                    'seconds_played': genre.get('secondsPlayed', 0)
-                }
-            
-            monthly_genre_data[month] = monthly_genres
-            evolution['monthly_genres'][month] = monthly_genres
-        
-        # Analyze genre trends
-        if len(sorted_stats) >= 2:
-            first_month = sorted_stats[0].get('date', '')
-            last_month = sorted_stats[-1].get('date', '')
-            
-            first_genres = set(monthly_genre_data.get(first_month, {}).keys())
-            last_genres = set(monthly_genre_data.get(last_month, {}).keys())
-            
-            # Emerging genres (new in recent months)
-            evolution['emerging_genres'] = list(last_genres - first_genres)
-            
-            # Declining genres (present in early months but not recent)
-            evolution['declining_genres'] = list(first_genres - last_genres)
-            
-            # Stable genres (present throughout)
-            evolution['stable_genres'] = list(first_genres & last_genres)
-        
-        return evolution
-    
-    def _analyze_genre_combinations(self) -> Dict[str, Any]:
-        """
-        Analyze genre combinations and co-occurrence patterns
-        
-        Returns:
-            Genre combinations analysis
-        """
-        if not self.sound_capsule.get('stats'):
-            return {}
-        
-        combinations = {
-            'frequent_pairs': [],
-            'genre_clusters': {},
-            'monthly_combinations': {}
-        }
-        
-        # Analyze genre pairs within each month
-        genre_pairs = Counter()
-        
-        for stat in self.sound_capsule.get('stats', []):
-            month = stat.get('date', '')
-            genres = [g['name'] for g in stat.get('topGenres', [])]
-            
-            # Find all pairs of genres in this month
-            for i in range(len(genres)):
-                for j in range(i + 1, len(genres)):
-                    pair = tuple(sorted([genres[i], genres[j]]))
-                    genre_pairs[pair] += 1
-            
-            combinations['monthly_combinations'][month] = genres
-        
-        # Find most frequent genre pairs
-        combinations['frequent_pairs'] = [
-            {'genres': list(pair), 'co_occurrence_count': count}
-            for pair, count in genre_pairs.most_common(10)
-        ]
-        
-        # Identify genre clusters (genres that often appear together)
-        genre_connections = defaultdict(set)
-        for pair, count in genre_pairs.items():
-            if count >= 2:  # Only consider pairs that appear in at least 2 months
-                genre_connections[pair[0]].add(pair[1])
-                genre_connections[pair[1]].add(pair[0])
-        
-        # Find clusters
-        visited = set()
-        clusters = []
-        
-        for genre in genre_connections:
-            if genre not in visited:
-                cluster = set()
-                stack = [genre]
-                
-                while stack:
-                    current = stack.pop()
-                    if current not in visited:
-                        visited.add(current)
-                        cluster.add(current)
-                        stack.extend(genre_connections[current])
-                
-                if len(cluster) > 1:  # Only include clusters with multiple genres
-                    clusters.append(list(cluster))
-        
-        combinations['genre_clusters'] = clusters
-        
-        return combinations
-    
-    def _analyze_engagement(self) -> Dict[str, Any]:
-        """
-        Analyze user engagement metrics
-        
-        Returns:
-            Engagement analysis
-        """
-        if not self.streaming_history:
-            return {}
-        
-        engagement = {
-            'total_streams': len(self.streaming_history),
-            'total_seconds': sum(record['secondsPlayed'] for record in self.streaming_history),
-            'unique_artists': len(set(record['artistName'] for record in self.streaming_history)),
-            'unique_tracks': len(set(record['trackName'] for record in self.streaming_history)),
-            'avg_stream_length': 0,
-            'completion_rates': {}
-        }
-        
-        # Calculate average stream length
-        if engagement['total_streams'] > 0:
-            engagement['avg_stream_length'] = engagement['total_seconds'] / engagement['total_streams']
-        
-        # Calculate completion rates by artist
-        artist_completions = defaultdict(lambda: {'total': 0, 'completed': 0})
-        
-        for record in self.streaming_history:
-            artist = record['artistName']
-            artist_completions[artist]['total'] += 1
-            # Consider a track "completed" if played for more than 60% of typical length (3 minutes)
-            if record['secondsPlayed'] > 180:
-                artist_completions[artist]['completed'] += 1
-        
-        for artist, stats in artist_completions.items():
-            if stats['total'] > 0:
-                engagement['completion_rates'][artist] = stats['completed'] / stats['total']
-        
-        return engagement
-    
-    def _detect_duplicates(self) -> Dict[str, Any]:
-        """
-        Detect and analyze duplicate entries across data sources
-        
-        Returns:
-            Duplicate analysis
-        """
-        duplicates = {
-            'streaming_history': self._find_streaming_duplicates(),
-            'cross_source': self._find_cross_source_duplicates()
-        }
-        
-        return duplicates
-    
-    def _find_streaming_duplicates(self) -> Dict[str, Any]:
-        """
-        Find duplicate entries within streaming history
-        
-        Returns:
-            Duplicate analysis for streaming history
-        """
-        if not self.streaming_history:
-            return {}
-        
-        # Group by artist + track
-        track_groups = defaultdict(list)
-        for i, record in enumerate(self.streaming_history):
-            key = f"{record['artistName']} - {record['trackName']}"
-            track_groups[key].append(i)
-        
-        # Find duplicates
-        duplicates = {
-            'exact_duplicates': [],
-            'similar_tracks': [],
-            'repeated_listens': []
-        }
-        
-        for key, indices in track_groups.items():
-            if len(indices) > 1:
-                # Check for exact duplicates (same timestamp and duration)
-                exact_dups = []
-                for i in indices:
-                    for j in indices:
-                        if i != j:
-                            record1 = self.streaming_history[i]
-                            record2 = self.streaming_history[j]
-                            if (record1['endTime'] == record2['endTime'] and 
-                                record1['msPlayed'] == record2['msPlayed']):
-                                exact_dups.append((i, j))
-                
-                if exact_dups:
-                    duplicates['exact_duplicates'].extend(exact_dups)
-                else:
-                    duplicates['repeated_listens'].append({
-                        'track': key,
-                        'count': len(indices),
-                        'indices': indices
-                    })
-        
-        return duplicates
-    
-    def _find_cross_source_duplicates(self) -> Dict[str, Any]:
-        """
-        Find duplicate entries across different data sources
-        
-        Returns:
-            Cross-source duplicate analysis
-        """
-        cross_duplicates = {
-            'streaming_vs_capsule': [],
-            'streaming_vs_library': [],
-            'capsule_vs_library': []
-        }
-        
-        # Compare streaming history vs sound capsule
-        streaming_tracks = set()
-        for record in self.streaming_history:
-            streaming_tracks.add(f"{record['artistName']} - {record['trackName']}")
-        
-        capsule_tracks = set()
-        for stat in self.sound_capsule.get('stats', []):
-            for track in stat.get('topTracks', []):
-                capsule_tracks.add(track['name'])
-        
-        # Find overlaps
-        for track in streaming_tracks:
-            track_name = track.split(' - ', 1)[1] if ' - ' in track else track
-            if track_name in capsule_tracks:
-                cross_duplicates['streaming_vs_capsule'].append(track)
-        
-        # Compare with library
-        library_tracks = set()
-        for track in self.library.get('tracks', []):
-            library_tracks.add(f"{track['artist']} - {track['track']}")
-        
-        for track in streaming_tracks:
-            if track in library_tracks:
-                cross_duplicates['streaming_vs_library'].append(track)
-        
-        return cross_duplicates
-    
-    def _generate_summary(self) -> Dict[str, Any]:
-        """
-        Generate a comprehensive summary of all data
-        
-        Returns:
-            Data summary
-        """
-        summary = {
-            'data_sources': {
-                'streaming_history': {
-                    'records': len(self.streaming_history),
-                    'time_span': self._get_time_span(self.streaming_history),
-                    'unique_artists': len(set(record['artistName'] for record in self.streaming_history)) if self.streaming_history else 0,
-                    'unique_tracks': len(set(record['trackName'] for record in self.streaming_history)) if self.streaming_history else 0
-                },
-                'sound_capsule': {
-                    'months': len(self.sound_capsule.get('stats', [])),
-                    'highlights': len(self.sound_capsule.get('highlights', [])),
-                    'total_genres': len(set(
-                        genre['name'] 
-                        for stat in self.sound_capsule.get('stats', []) 
-                        for genre in stat.get('topGenres', [])
-                    ))
-                },
-                'library': {
-                    'tracks': len(self.library.get('tracks', [])),
-                    'albums': len(self.library.get('albums', [])),
-                    'shows': len(self.library.get('shows', [])),
-                    'episodes': len(self.library.get('episodes', []))
-                }
-            },
-            'total_listening_time': sum(record['secondsPlayed'] for record in self.streaming_history) if self.streaming_history else 0,
-            'genre_insights': self._get_genre_summary(),
-            'processing_timestamp': datetime.now().isoformat()
-        }
-        
-        return summary
-    
-    def _get_genre_summary(self) -> Dict[str, Any]:
-        """
-        Generate a summary of genre insights
-        
-        Returns:
-            Genre summary dictionary
-        """
-        if not self.sound_capsule.get('stats'):
-            return {}
-        
-        # Collect all genres
-        all_genres = set()
-        genre_monthly_data = defaultdict(list)
-        
-        for stat in self.sound_capsule.get('stats', []):
-            month = stat.get('date', '')
-            for genre in stat.get('topGenres', []):
-                genre_name = genre['name']
-                all_genres.add(genre_name)
-                genre_monthly_data[genre_name].append({
-                    'month': month,
-                    'stream_count': genre.get('streamCount', 0),
-                    'seconds_played': genre.get('secondsPlayed', 0)
-                })
-        
-        # Calculate genre insights
-        genre_insights = {
-            'total_unique_genres': len(all_genres),
-            'most_consistent_genres': [],
-            'genre_diversity_score': 0,
-            'top_genres_by_month': {},
-            'genre_trends': {}
-        }
-        
-        # Find most consistent genres (appear in most months)
-        genre_consistency = {}
-        for genre, monthly_data in genre_monthly_data.items():
-            consistency = len(monthly_data)
-            genre_consistency[genre] = consistency
-        
-        most_consistent = sorted(genre_consistency.items(), key=lambda x: x[1], reverse=True)
-        genre_insights['most_consistent_genres'] = [
-            {'genre': genre, 'months_active': count}
-            for genre, count in most_consistent[:5]
-        ]
-        
-        # Calculate genre diversity (how many different genres per month on average)
-        monthly_genre_counts = []
-        for stat in self.sound_capsule.get('stats', []):
-            genres_in_month = len(stat.get('topGenres', []))
-            monthly_genre_counts.append(genres_in_month)
-        
-        if monthly_genre_counts:
-            genre_insights['genre_diversity_score'] = sum(monthly_genre_counts) / len(monthly_genre_counts)
-        
-        # Top genres by month
-        for stat in self.sound_capsule.get('stats', []):
-            month = stat.get('date', '')
-            top_genre = None
-            max_streams = 0
-            
-            for genre in stat.get('topGenres', []):
-                if genre.get('streamCount', 0) > max_streams:
-                    max_streams = genre.get('streamCount', 0)
-                    top_genre = genre['name']
-            
-            if top_genre:
-                genre_insights['top_genres_by_month'][month] = top_genre
-        
-        # Genre trends (which genres are growing/declining)
-        if len(self.sound_capsule.get('stats', [])) >= 2:
-            sorted_stats = sorted(self.sound_capsule['stats'], key=lambda x: x.get('date', ''))
-            first_month = sorted_stats[0].get('date', '')
-            last_month = sorted_stats[-1].get('date', '')
-            
-            first_month_genres = {g['name']: g.get('streamCount', 0) for g in sorted_stats[0].get('topGenres', [])}
-            last_month_genres = {g['name']: g.get('streamCount', 0) for g in sorted_stats[-1].get('topGenres', [])}
-            
-            growing_genres = []
-            declining_genres = []
-            
-            for genre in all_genres:
-                first_count = first_month_genres.get(genre, 0)
-                last_count = last_month_genres.get(genre, 0)
-                
-                if last_count > first_count:
-                    growing_genres.append({
-                        'genre': genre,
-                        'growth': last_count - first_count,
-                        'first_month': first_count,
-                        'last_month': last_count
-                    })
-                elif first_count > last_count:
-                    declining_genres.append({
-                        'genre': genre,
-                        'decline': first_count - last_count,
-                        'first_month': first_count,
-                        'last_month': last_count
-                    })
-            
-            genre_insights['genre_trends'] = {
-                'growing_genres': sorted(growing_genres, key=lambda x: x['growth'], reverse=True)[:5],
-                'declining_genres': sorted(declining_genres, key=lambda x: x['decline'], reverse=True)[:5]
-            }
-        
-        return genre_insights
-    
-    def _get_time_span(self, records: List[Dict[str, Any]]) -> Dict[str, str]:
-        """
-        Get the time span of streaming history records
-        
-        Args:
-            records: List of streaming records
-            
-        Returns:
-            Dictionary with start and end dates
-        """
-        if not records:
-            return {}
-        
-        timestamps = [record['timestamp'] for record in records]
-        return {
-            'start': min(timestamps).strftime("%Y-%m-%d"),
-            'end': max(timestamps).strftime("%Y-%m-%d")
-        }
-    
-    def get_processed_data(self) -> Dict[str, Any]:
-        """
-        Get the processed data
-        
-        Returns:
-            Processed data dictionary
-        """
-        return self.processed_data
-    
-    def export_analysis(self, output_file: str = "data_analysis.json") -> None:
-        """
-        Export the processed data and analysis to a JSON file
-        
-        Args:
-            output_file: Output file path
-        """
-        try:
-            # Convert sets to lists for JSON serialization
-            export_data = self._prepare_for_export(self.processed_data)
-            
-            with open(output_file, 'w', encoding='utf-8') as f:
-                json.dump(export_data, f, indent=2, ensure_ascii=False, default=str)
-            
-            logger.info(f"Analysis exported to {output_file}")
-            
-        except Exception as e:
-            logger.error(f"Error exporting analysis: {e}")
-            raise
-    
-    def _prepare_for_export(self, data: Any) -> Any:
-        """
-        Prepare data for JSON export by converting non-serializable types
-        
-        Args:
-            data: Data to prepare
-            
-        Returns:
-            JSON-serializable data
-        """
-        if isinstance(data, dict):
-            return {k: self._prepare_for_export(v) for k, v in data.items()}
-        elif isinstance(data, list):
-            return [self._prepare_for_export(item) for item in data]
-        elif isinstance(data, set):
-            return list(data)
-        elif isinstance(data, datetime):
-            return data.isoformat()
-        else:
-            return data
 
 
 # Convenience function for quick data loading
@@ -1273,44 +603,38 @@ if __name__ == "__main__":
     # Set up logging
     logging.basicConfig(level=logging.INFO)
     
-    # Load and process data
+    # Test the 2024 data loading
     processor = DataProcessor()
-    data = processor.load_all_data()
+    processor.load_all_data()
     
-    # Print summary
-    summary = data['summary']
-    print(f"\n📊 Data Processing Summary:")
-    print(f"Streaming History: {summary['data_sources']['streaming_history']['records']} records")
-    print(f"Sound Capsule: {summary['data_sources']['sound_capsule']['months']} months")
-    print(f"Library: {summary['data_sources']['library']['tracks']} tracks, {summary['data_sources']['library']['albums']} albums")
-    print(f"Total Listening Time: {summary['total_listening_time'] / 3600:.1f} hours")
+    # First get all data without limits to see total counts
+    all_data = processor.load_2024_chunk(limit=0)
     
-    # Print genre insights
-    if 'genre_insights' in summary:
-        genre_insights = summary['genre_insights']
-        print(f"\n🎵 Genre Analysis:")
-        print(f"Total Unique Genres: {genre_insights.get('total_unique_genres', 0)}")
-        print(f"Genre Diversity Score: {genre_insights.get('genre_diversity_score', 0):.1f} genres/month")
-        
-        if genre_insights.get('most_consistent_genres'):
-            print(f"Most Consistent Genre: {genre_insights['most_consistent_genres'][0]['genre']} ({genre_insights['most_consistent_genres'][0]['months_active']} months)")
-        
-        if genre_insights.get('genre_trends', {}).get('growing_genres'):
-            growing = genre_insights['genre_trends']['growing_genres'][0]
-            print(f"Fastest Growing Genre: {growing['genre']} (+{growing['growth']} streams)")
-        
-        if genre_insights.get('genre_trends', {}).get('declining_genres'):
-            declining = genre_insights['genre_trends']['declining_genres'][0]
-            print(f"Most Declining Genre: {declining['genre']} (-{declining['decline']} streams)")
+    # Count total items
+    track_count = len(all_data['recent_tracks'].split(", ")) if all_data['recent_tracks'] else 0
+    artist_count = len(all_data['top_artists'].split(", ")) if all_data['top_artists'] else 0
+    genre_count = len(all_data['top_genres'].split(", ")) if all_data['top_genres'] else 0
     
-    # Print top genres from analysis
-    if 'analysis' in data and 'genres' in data['analysis']:
-        genres = data['analysis']['genres']
-        if genres.get('by_total_time'):
-            print(f"\n🏆 Top Genres by Listening Time:")
-            for i, (genre, stats) in enumerate(genres['by_total_time'][:5], 1):
-                hours = stats['total_seconds'] / 3600
-                print(f"  {i}. {genre}: {hours:.1f} hours ({stats['stream_count']} streams)")
+    print("\n📊 Total Available 2024 Data:")
+    print(f"Total Unique Tracks: {track_count}")
+    print(f"Total Unique Artists: {artist_count}")
+    print(f"Total Unique Genres: {genre_count}")
     
-    # Export analysis
-    processor.export_analysis()
+    # Now get data with higher limit
+    data_2024 = processor.load_2024_chunk(limit=30)
+    
+    print("\n🎵 2024 Listening Data for GPT (Top 30 each):")
+    print(f"\nRecent Tracks:")
+    tracks = data_2024['recent_tracks'].split(", ")
+    for i, track in enumerate(tracks, 1):
+        print(f"{i}. {track}")
+    
+    print(f"\nTop Artists:")
+    artists = data_2024['top_artists'].split(", ")
+    for i, artist in enumerate(artists, 1):
+        print(f"{i}. {artist}")
+    
+    print(f"\nTop Genres:")
+    genres = data_2024['top_genres'].split(", ")
+    for i, genre in enumerate(genres, 1):
+        print(f"{i}. {genre}")

@@ -1,0 +1,154 @@
+{
+  "tracks": [
+    {
+      "artist": "Brodha V",
+      "album": "Aigiri Nandini",
+      "track": "Aigiri Nandini",
+      "uri": "spotify:track:24ABx2uZSJ7FxkUZOMLCmN"
+    },
+    {
+      "artist": "Carlos Francisco",
+      "album": "El Toro Y La Rana (Kahani's Dholna Mix)",
+      "track": "El Toro Y La Rana - Kahani's Dholna Mix",
+      "uri": "spotify:track:56iIjobYqjus7QcHMrHMup"
+    },
+    {
+      "artist": "The Wedding Filmer",
+      "album": "Yeh Aashiqui",
+      "track": "Yeh Aashiqui",
+      "uri": "spotify:track:3xsd26Hjc2xKfUpawXUnHg"
+    },
+    {
+      "artist": "Gurdas Maan",
+      "album": "Coke Studio S4",
+      "track": "Ki Banu Duniya Da",
+      "uri": "spotify:track:4eERBo2rKoYkSaI4Gj4dDW"
+    },
+    {
+      "artist": "Gotye",
+      "album": "Somebody (2024)",
+      "track": "Somebody (2024)",
+      "uri": "spotify:track:0agQ9vIV7NP4dntGKLcCXO"
+    },
+    {
+      "artist": "Jonas Blue",
+      "album": "Blue",
+      "track": "Perfect Strangers",
+      "uri": "spotify:track:3P3pw6C19j31Rnzgo3JG7o"
+    },
+    {
+      "artist": "Kahani",
+      "album": "Indo Warehouse: Year One",
+      "track": "Midnight Groove",
+      "uri": "spotify:track:5TOsQK0E0FjKad2Nr2r4xy"
+    }
+  ],
+  "albums": [
+    {
+      "artist": "A.R. Rahman",
+      "album": "Saathiya",
+      "uri": "spotify:album:6BJPcgCN37gDKtPh7gmJ3p"
+    },
+    {
+      "artist": "Anu Malik",
+      "album": "Yaadein",
+      "uri": "spotify:album:25rtBMXrpMoTAVHBDhBTMk"
+    },
+    {
+      "artist": "Masala Coffee",
+      "album": "Aadiyilalo - Single",
+      "uri": "spotify:album:0FAYTUKDSrmcj9yht287Lr"
+    },
+    {
+      "artist": "Gaurav Raina",
+      "album": "Made in Heaven Season 2",
+      "uri": "spotify:album:4Xkq4GEqrfrW8JiN5za4aI"
+    },
+    {
+      "artist": "Rasraj Ji Maharaj",
+      "album": "Bajrang Baan-Lofi",
+      "uri": "spotify:album:71FaPlNORjClamPZtQoxMu"
+    },
+    {
+      "artist": "Conkarah",
+      "album": "Banana (feat. Shaggy)",
+      "uri": "spotify:album:7KUCF2HoTNjA9aLG3PvIew"
+    },
+    {
+      "artist": "AP Dhillon",
+      "album": "Two Hearts Never Break The Same",
+      "uri": "spotify:album:0eZKTY3yDMqMTrVvtcEokh"
+    },
+    {
+      "artist": "Nicholas Britell",
+      "album": "Succession, Season 1",
+      "uri": "spotify:album:2JsH6mfSAfojZhQJ5CuLMK"
+    },
+    {
+      "artist": "B. Ajaneesh Loknath",
+      "album": "Kantara (Original Motion Picture Soundtrack)",
+      "uri": "spotify:album:6mDLeut7Z29NF4agnaYxLZ"
+    },
+    {
+      "artist": "AP Dhillon",
+      "album": "With You",
+      "uri": "spotify:album:30eM1PJ8qLZJeEykhcje0j"
+    }
+  ],
+  "shows": [
+  ],
+  "episodes": [
+  ],
+  "bannedTracks": [
+  ],
+  "artists": [
+    {
+      "name": "5 Seconds of Summer",
+      "uri": "spotify:artist:5Rl15oVamLq7FbSb0NNBNy"
+    },
+    {
+      "name": "DNCE",
+      "uri": "spotify:artist:6T5tfhQCknKG4UnH90qGnz"
+    },
+    {
+      "name": "HRVY",
+      "uri": "spotify:artist:28y6CyJNkGNjJQKrlx4AmN"
+    },
+    {
+      "name": "Hailee Steinfeld",
+      "uri": "spotify:artist:5p7f24Rk5HkUZsaS3BLG5F"
+    },
+    {
+      "name": "Harry Styles",
+      "uri": "spotify:artist:6KImCVD70vtIoJWnq6nGn3"
+    },
+    {
+      "name": "Justin Bieber",
+      "uri": "spotify:artist:1uNFoZAHBGtllmzznpCI3s"
+    },
+    {
+      "name": "Lauv",
+      "uri": "spotify:artist:5JZ7CnR6gTvEMKX4g70Amv"
+    },
+    {
+      "name": "Niall Horan",
+      "uri": "spotify:artist:1Hsdzj7Dlq2I7tHP7501T4"
+    },
+    {
+      "name": "One Direction",
+      "uri": "spotify:artist:4AK6F7OLvEQ5QYCBNiQWHq"
+    },
+    {
+      "name": "Shawn Mendes",
+      "uri": "spotify:artist:7n2wHs1TKAczGzO7Dd2rGr"
+    },
+    {
+      "name": "ZAYN",
+      "uri": "spotify:artist:5ZsFI1h6hIdQRw2ti0hz81"
+    }
+  ],
+  "bannedArtists": [
+  ],
+  "other": [
+  ]
+}

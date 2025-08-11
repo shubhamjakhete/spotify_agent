@@ -1,0 +1,1932 @@
+{
+  "stats": [
+    {
+      "date": "2025-03",
+      "streamCount": 706,
+      "secondsPlayed": 139834,
+      "topTracks": [
+        {
+          "name": "Re Manva",
+          "streamCount": 60,
+          "secondsPlayed": 11808
+        },
+        {
+          "name": "Aaj Ki Raat (From \"Stree 2\")",
+          "streamCount": 39,
+          "secondsPlayed": 8668
+        },
+        {
+          "name": "Afsos",
+          "streamCount": 25,
+          "secondsPlayed": 4388
+        },
+        {
+          "name": "AANKH",
+          "streamCount": 25,
+          "secondsPlayed": 4448
+        },
+        {
+          "name": "Akhiyaan Gulaab (From \"Teri Baaton Mein Aisa Uljha Jiya\")",
+          "streamCount": 17,
+          "secondsPlayed": 2879
+        },
+        {
+          "name": "Maand",
+          "streamCount": 14,
+          "secondsPlayed": 2562
+        },
+        {
+          "name": "Tu Jhoom",
+          "streamCount": 13,
+          "secondsPlayed": 4143
+        },
+        {
+          "name": "Main Dhoondne Ko Zamaane Mein (From \"Heartless\")",
+          "streamCount": 13,
+          "secondsPlayed": 2961
+        },
+        {
+          "name": "Naacho Naacho (From \"RRR\")",
+          "streamCount": 13,
+          "secondsPlayed": 2736
+        },
+        {
+          "name": "Chakshushopanishat",
+          "streamCount": 12,
+          "secondsPlayed": 2479
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Shubham Kabra",
+          "streamCount": 60,
+          "secondsPlayed": 11808
+        },
+        {
+          "name": "Sachin-Jigar",
+          "streamCount": 57,
+          "secondsPlayed": 12016
+        },
+        {
+          "name": "Arijit Singh",
+          "streamCount": 40,
+          "secondsPlayed": 8329
+        },
+        {
+          "name": "Anuv Jain",
+          "streamCount": 29,
+          "secondsPlayed": 5305
+        },
+        {
+          "name": "Sunidhi Chauhan",
+          "streamCount": 31,
+          "secondsPlayed": 5292
+        },
+        {
+          "name": "Hasan Raheem",
+          "streamCount": 31,
+          "secondsPlayed": 5708
+        },
+        {
+          "name": "Madhubanti Bagchi",
+          "streamCount": 45,
+          "secondsPlayed": 10297
+        },
+        {
+          "name": "Mitraz",
+          "streamCount": 17,
+          "secondsPlayed": 2879
+        },
+        {
+          "name": "Divya Kumar",
+          "streamCount": 45,
+          "secondsPlayed": 9708
+        },
+        {
+          "name": "Vishal Mishra",
+          "streamCount": 15,
+          "secondsPlayed": 3206
+        }
+      ],
+      "topGenres": [
+        {
+          "name": "bollywood",
+          "streamCount": 166,
+          "secondsPlayed": 53555
+        },
+        {
+          "name": "dance",
+          "streamCount": 152,
+          "secondsPlayed": 42618
+        },
+        {
+          "name": "hindi pop",
+          "streamCount": 76,
+          "secondsPlayed": 29802
+        },
+        {
+          "name": "desi pop",
+          "streamCount": 47,
+          "secondsPlayed": 15408
+        },
+        {
+          "name": "pop",
+          "streamCount": 72,
+          "secondsPlayed": 15130
+        },
+        {
+          "name": "edm",
+          "streamCount": 59,
+          "secondsPlayed": 12248
+        },
+        {
+          "name": "electropop",
+          "streamCount": 57,
+          "secondsPlayed": 11685
+        },
+        {
+          "name": "dance pop",
+          "streamCount": 52,
+          "secondsPlayed": 11192
+        },
+        {
+          "name": "electronica",
+          "streamCount": 51,
+          "secondsPlayed": 10387
+        },
+        {
+          "name": "indie",
+          "streamCount": 10,
+          "secondsPlayed": 9225
+        }
+      ],
+      "timeOfDayStats": [
+        {
+          "period": "late_evening",
+          "secondsPlayed": 41619
+        },
+        {
+          "period": "afternoon",
+          "secondsPlayed": 45691
+        },
+        {
+          "period": "morning",
+          "secondsPlayed": 8885
+        },
+        {
+          "period": "evening",
+          "secondsPlayed": 37855
+        },
+        {
+          "period": "early_morning",
+          "secondsPlayed": 854
+        },
+        {
+          "period": "night",
+          "secondsPlayed": 4907
+        }
+      ]
+    },
+    {
+      "date": "2025-02",
+      "streamCount": 628,
+      "secondsPlayed": 134305,
+      "topTracks": [
+        {
+          "name": "Commentary Tabussum And O Saathi Re - Muqaddar Ka Sikandar",
+          "streamCount": 43,
+          "secondsPlayed": 11584
+        },
+        {
+          "name": "Cassy O'",
+          "streamCount": 28,
+          "secondsPlayed": 4917
+        },
+        {
+          "name": "Budapest",
+          "streamCount": 22,
+          "secondsPlayed": 4301
+        },
+        {
+          "name": "Nadiya Chale Chale Re Dhara",
+          "streamCount": 21,
+          "secondsPlayed": 4877
+        },
+        {
+          "name": "Luttna",
+          "streamCount": 20,
+          "secondsPlayed": 5669
+        },
+        {
+          "name": "Oh Re Taal Mile Nadi Ke Jal Mein",
+          "streamCount": 20,
+          "secondsPlayed": 3899
+        },
+        {
+          "name": "Somebody (2024)",
+          "streamCount": 19,
+          "secondsPlayed": 2462
+        },
+        {
+          "name": "Premika Ne Pyar Se",
+          "streamCount": 19,
+          "secondsPlayed": 4853
+        },
+        {
+          "name": "Monta Re",
+          "streamCount": 19,
+          "secondsPlayed": 4346
+        },
+        {
+          "name": "Enemy (with JID) - from the series Arcane League of Legends",
+          "streamCount": 14,
+          "secondsPlayed": 2063
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "George Ezra",
+          "streamCount": 51,
+          "secondsPlayed": 9293
+        },
+        {
+          "name": "Tabassum",
+          "streamCount": 44,
+          "secondsPlayed": 11825
+        },
+        {
+          "name": "Gurbax",
+          "streamCount": 35,
+          "secondsPlayed": 5642
+        },
+        {
+          "name": "Kishore Kumar",
+          "streamCount": 53,
+          "secondsPlayed": 14521
+        },
+        {
+          "name": "Kalyanji-Anandji",
+          "streamCount": 64,
+          "secondsPlayed": 16461
+        },
+        {
+          "name": "Kahani",
+          "streamCount": 27,
+          "secondsPlayed": 6995
+        },
+        {
+          "name": "Mukesh",
+          "streamCount": 23,
+          "secondsPlayed": 4490
+        },
+        {
+          "name": "Hasan Raheem",
+          "streamCount": 22,
+          "secondsPlayed": 3965
+        },
+        {
+          "name": "MASUMA ANWAR",
+          "streamCount": 21,
+          "secondsPlayed": 5952
+        },
+        {
+          "name": "Manna Dey",
+          "streamCount": 21,
+          "secondsPlayed": 4877
+        }
+      ],
+      "topGenres": [
+        {
+          "name": "bollywood",
+          "streamCount": 82,
+          "secondsPlayed": 32599
+        },
+        {
+          "name": "classic bollywood",
+          "streamCount": 47,
+          "secondsPlayed": 27916
+        },
+        {
+          "name": "dance",
+          "streamCount": 53,
+          "secondsPlayed": 14178
+        },
+        {
+          "name": "desi hip hop",
+          "streamCount": 37,
+          "secondsPlayed": 12959
+        },
+        {
+          "name": "edm",
+          "streamCount": 48,
+          "secondsPlayed": 12838
+        },
+        {
+          "name": "acid jazz",
+          "streamCount": 6,
+          "secondsPlayed": 11584
+        },
+        {
+          "name": "electronica",
+          "streamCount": 34,
+          "secondsPlayed": 9493
+        },
+        {
+          "name": "electronic",
+          "streamCount": 34,
+          "secondsPlayed": 9402
+        },
+        {
+          "name": "folk pop",
+          "streamCount": 15,
+          "secondsPlayed": 9293
+        },
+        {
+          "name": "electro",
+          "streamCount": 31,
+          "secondsPlayed": 8800
+        }
+      ],
+      "timeOfDayStats": [
+        {
+          "period": "late_evening",
+          "secondsPlayed": 25394
+        },
+        {
+          "period": "afternoon",
+          "secondsPlayed": 48275
+        },
+        {
+          "period": "morning",
+          "secondsPlayed": 17410
+        },
+        {
+          "period": "evening",
+          "secondsPlayed": 42057
+        },
+        {
+          "period": "early_morning",
+          "secondsPlayed": 998
+        },
+        {
+          "period": "night",
+          "secondsPlayed": 154
+        }
+      ]
+    },
+    {
+      "date": "2025-01",
+      "streamCount": 125,
+      "secondsPlayed": 33070,
+      "topTracks": [
+        {
+          "name": "Navarasam",
+          "streamCount": 26,
+          "secondsPlayed": 9628
+        },
+        {
+          "name": "Aarachar",
+          "streamCount": 11,
+          "secondsPlayed": 4044
+        },
+        {
+          "name": "Babala",
+          "streamCount": 7,
+          "secondsPlayed": 2130
+        },
+        {
+          "name": "Chaiyya II",
+          "streamCount": 6,
+          "secondsPlayed": 1126
+        },
+        {
+          "name": "Yaaron Sab Dua Karo",
+          "streamCount": 5,
+          "secondsPlayed": 1494
+        },
+        {
+          "name": "Mera Chand Mujhe Aaya Hai Nazar",
+          "streamCount": 5,
+          "secondsPlayed": 1446
+        },
+        {
+          "name": "Aigiri Nandini",
+          "streamCount": 4,
+          "secondsPlayed": 957
+        },
+        {
+          "name": "Saaiyaan",
+          "streamCount": 4,
+          "secondsPlayed": 827
+        },
+        {
+          "name": "Maaeri",
+          "streamCount": 4,
+          "secondsPlayed": 1218
+        },
+        {
+          "name": "Dooron Dooron",
+          "streamCount": 3,
+          "secondsPlayed": 512
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Thaikkudam Bridge",
+          "streamCount": 37,
+          "secondsPlayed": 13672
+        },
+        {
+          "name": "Kahani",
+          "streamCount": 20,
+          "secondsPlayed": 4595
+        },
+        {
+          "name": "Vipin Lal",
+          "streamCount": 26,
+          "secondsPlayed": 9628
+        },
+        {
+          "name": "Dhanya Suresh Menon",
+          "streamCount": 37,
+          "secondsPlayed": 13672
+        },
+        {
+          "name": "Govind Vasantha",
+          "streamCount": 11,
+          "secondsPlayed": 4044
+        },
+        {
+          "name": "Vinod Rathod",
+          "streamCount": 5,
+          "secondsPlayed": 1494
+        },
+        {
+          "name": "Kumar Sanu",
+          "streamCount": 5,
+          "secondsPlayed": 1446
+        },
+        {
+          "name": "Indo Warehouse",
+          "streamCount": 13,
+          "secondsPlayed": 2410
+        },
+        {
+          "name": "Palash Sen",
+          "streamCount": 4,
+          "secondsPlayed": 1218
+        },
+        {
+          "name": "Brodha V",
+          "streamCount": 4,
+          "secondsPlayed": 957
+        }
+      ],
+      "topGenres": [
+        {
+          "name": "indian classical",
+          "streamCount": 13,
+          "secondsPlayed": 10746
+        },
+        {
+          "name": "carnatic",
+          "streamCount": 12,
+          "secondsPlayed": 10585
+        },
+        {
+          "name": "bollywood",
+          "streamCount": 8,
+          "secondsPlayed": 2038
+        },
+        {
+          "name": "desi hip hop",
+          "streamCount": 7,
+          "secondsPlayed": 1874
+        },
+        {
+          "name": "afro house",
+          "streamCount": 7,
+          "secondsPlayed": 1848
+        },
+        {
+          "name": "house",
+          "streamCount": 5,
+          "secondsPlayed": 1737
+        },
+        {
+          "name": "bhajan",
+          "streamCount": 3,
+          "secondsPlayed": 1471
+        },
+        {
+          "name": "classic bollywood",
+          "streamCount": 5,
+          "secondsPlayed": 1362
+        },
+        {
+          "name": "techno",
+          "streamCount": 2,
+          "secondsPlayed": 1267
+        }
+      ],
+      "timeOfDayStats": [
+        {
+          "period": "night",
+          "secondsPlayed": 225
+        },
+        {
+          "period": "late_evening",
+          "secondsPlayed": 7583
+        },
+        {
+          "period": "afternoon",
+          "secondsPlayed": 11084
+        },
+        {
+          "period": "morning",
+          "secondsPlayed": 10049
+        },
+        {
+          "period": "evening",
+          "secondsPlayed": 4122
+        }
+      ]
+    },
+    {
+      "date": "2024-12",
+      "streamCount": 303,
+      "secondsPlayed": 66440,
+      "topTracks": [
+        {
+          "name": "Temperature",
+          "streamCount": 38,
+          "secondsPlayed": 7766
+        },
+        {
+          "name": "Yalla",
+          "streamCount": 26,
+          "secondsPlayed": 6515
+        },
+        {
+          "name": "You Belong To Me",
+          "streamCount": 17,
+          "secondsPlayed": 2301
+        },
+        {
+          "name": "El Toro Y La Rana - Kahani's Dholna Mix",
+          "streamCount": 16,
+          "secondsPlayed": 4730
+        },
+        {
+          "name": "Maaeri",
+          "streamCount": 14,
+          "secondsPlayed": 4000
+        },
+        {
+          "name": "Channa Vey",
+          "streamCount": 14,
+          "secondsPlayed": 3468
+        },
+        {
+          "name": "Bulleya",
+          "streamCount": 12,
+          "secondsPlayed": 3683
+        },
+        {
+          "name": "Balle Balle",
+          "streamCount": 11,
+          "secondsPlayed": 1774
+        },
+        {
+          "name": "Saudebazi (Encore)",
+          "streamCount": 11,
+          "secondsPlayed": 3232
+        },
+        {
+          "name": "Aigiri Nandini",
+          "streamCount": 10,
+          "secondsPlayed": 1986
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Kahani",
+          "streamCount": 76,
+          "secondsPlayed": 17196
+        },
+        {
+          "name": "Sean Paul",
+          "streamCount": 39,
+          "secondsPlayed": 7839
+        },
+        {
+          "name": "Bryan Adams",
+          "streamCount": 18,
+          "secondsPlayed": 2517
+        },
+        {
+          "name": "Indo Warehouse",
+          "streamCount": 55,
+          "secondsPlayed": 11618
+        },
+        {
+          "name": "Carlos Francisco",
+          "streamCount": 16,
+          "secondsPlayed": 4730
+        },
+        {
+          "name": "Palash Sen",
+          "streamCount": 14,
+          "secondsPlayed": 4000
+        },
+        {
+          "name": "Kunal Ganjawala",
+          "streamCount": 14,
+          "secondsPlayed": 3468
+        },
+        {
+          "name": "DJ H",
+          "streamCount": 26,
+          "secondsPlayed": 6515
+        },
+        {
+          "name": "Vishal-Shekhar",
+          "streamCount": 12,
+          "secondsPlayed": 3683
+        },
+        {
+          "name": "Pritam",
+          "streamCount": 11,
+          "secondsPlayed": 3232
+        }
+      ],
+      "topGenres": [
+        {
+          "name": "afro house",
+          "streamCount": 27,
+          "secondsPlayed": 13168
+        },
+        {
+          "name": "dance",
+          "streamCount": 23,
+          "secondsPlayed": 11918
+        },
+        {
+          "name": "bollywood",
+          "streamCount": 23,
+          "secondsPlayed": 10692
+        },
+        {
+          "name": "house",
+          "streamCount": 16,
+          "secondsPlayed": 9286
+        },
+        {
+          "name": "90s pop",
+          "streamCount": 16,
+          "secondsPlayed": 9245
+        },
+        {
+          "name": "club",
+          "streamCount": 13,
+          "secondsPlayed": 9231
+        },
+        {
+          "name": "desi pop",
+          "streamCount": 14,
+          "secondsPlayed": 8674
+        },
+        {
+          "name": "indie pop",
+          "streamCount": 14,
+          "secondsPlayed": 8602
+        },
+        {
+          "name": "90s indie",
+          "streamCount": 14,
+          "secondsPlayed": 8602
+        },
+        {
+          "name": "dance rap",
+          "streamCount": 9,
+          "secondsPlayed": 7766
+        }
+      ],
+      "timeOfDayStats": [
+        {
+          "period": "late_evening",
+          "secondsPlayed": 22141
+        },
+        {
+          "period": "afternoon",
+          "secondsPlayed": 20003
+        },
+        {
+          "period": "morning",
+          "secondsPlayed": 9668
+        },
+        {
+          "period": "evening",
+          "secondsPlayed": 10841
+        },
+        {
+          "period": "early_morning",
+          "secondsPlayed": 996
+        },
+        {
+          "period": "night",
+          "secondsPlayed": 2777
+        }
+      ]
+    },
+    {
+      "date": "2024-11",
+      "streamCount": 266,
+      "secondsPlayed": 56049,
+      "topTracks": [
+        {
+          "name": "Bheegi Bheegi Raaton Mein (From \"Ajnabee\")",
+          "streamCount": 29,
+          "secondsPlayed": 6315
+        },
+        {
+          "name": "Suniyan Suniyan",
+          "streamCount": 26,
+          "secondsPlayed": 4734
+        },
+        {
+          "name": "The Wellerman",
+          "streamCount": 23,
+          "secondsPlayed": 3665
+        },
+        {
+          "name": "Radioactive",
+          "streamCount": 15,
+          "secondsPlayed": 2460
+        },
+        {
+          "name": "Bholenath - A Love Story",
+          "streamCount": 14,
+          "secondsPlayed": 3946
+        },
+        {
+          "name": "Better Days",
+          "streamCount": 11,
+          "secondsPlayed": 2584
+        },
+        {
+          "name": "Sex on Fire",
+          "streamCount": 10,
+          "secondsPlayed": 1648
+        },
+        {
+          "name": "Chaleya",
+          "streamCount": 10,
+          "secondsPlayed": 1590
+        },
+        {
+          "name": "Kamli (MTV Unplugged)",
+          "streamCount": 8,
+          "secondsPlayed": 2304
+        },
+        {
+          "name": "Wellerman - Sea Shanty",
+          "streamCount": 8,
+          "secondsPlayed": 1240
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Lata Mangeshkar",
+          "streamCount": 37,
+          "secondsPlayed": 9015
+        },
+        {
+          "name": "Juss",
+          "streamCount": 26,
+          "secondsPlayed": 4734
+        },
+        {
+          "name": "Kishore Kumar",
+          "streamCount": 40,
+          "secondsPlayed": 8014
+        },
+        {
+          "name": "Celtic Thunder",
+          "streamCount": 23,
+          "secondsPlayed": 3665
+        },
+        {
+          "name": "Kings of Leon",
+          "streamCount": 15,
+          "secondsPlayed": 3422
+        },
+        {
+          "name": "Imagine Dragons",
+          "streamCount": 15,
+          "secondsPlayed": 2460
+        },
+        {
+          "name": "Kaka WRLD",
+          "streamCount": 14,
+          "secondsPlayed": 3946
+        },
+        {
+          "name": "MixSingh",
+          "streamCount": 26,
+          "secondsPlayed": 4734
+        },
+        {
+          "name": "Arijit Singh",
+          "streamCount": 16,
+          "secondsPlayed": 3347
+        },
+        {
+          "name": "Pritam",
+          "streamCount": 11,
+          "secondsPlayed": 3023
+        }
+      ],
+      "topGenres": [
+        {
+          "name": "bollywood",
+          "streamCount": 43,
+          "secondsPlayed": 16556
+        },
+        {
+          "name": "oldies",
+          "streamCount": 16,
+          "secondsPlayed": 9996
+        },
+        {
+          "name": "hindi pop",
+          "streamCount": 19,
+          "secondsPlayed": 7722
+        },
+        {
+          "name": "alternative",
+          "streamCount": 11,
+          "secondsPlayed": 5681
+        },
+        {
+          "name": "alternative rock",
+          "streamCount": 11,
+          "secondsPlayed": 5681
+        },
+        {
+          "name": "rock",
+          "streamCount": 11,
+          "secondsPlayed": 5681
+        },
+        {
+          "name": "modern rock",
+          "streamCount": 11,
+          "secondsPlayed": 5681
+        },
+        {
+          "name": "desi pop",
+          "streamCount": 12,
+          "secondsPlayed": 4918
+        },
+        {
+          "name": "sea shanties",
+          "streamCount": 7,
+          "secondsPlayed": 4905
+        },
+        {
+          "name": "celtic folk",
+          "streamCount": 5,
+          "secondsPlayed": 3665
+        }
+      ],
+      "timeOfDayStats": [
+        {
+          "period": "early_morning",
+          "secondsPlayed": 1321
+        },
+        {
+          "period": "late_evening",
+          "secondsPlayed": 9740
+        },
+        {
+          "period": "afternoon",
+          "secondsPlayed": 9458
+        },
+        {
+          "period": "morning",
+          "secondsPlayed": 16730
+        },
+        {
+          "period": "evening",
+          "secondsPlayed": 18782
+        }
+      ]
+    },
+    {
+      "date": "2024-10",
+      "streamCount": 264,
+      "secondsPlayed": 60161,
+      "topTracks": [
+        {
+          "name": "Saaiyaan",
+          "streamCount": 21,
+          "secondsPlayed": 5288
+        },
+        {
+          "name": "Kya Mujhe Pyar Hai (Style Mix)",
+          "streamCount": 18,
+          "secondsPlayed": 4115
+        },
+        {
+          "name": "Allah Hafiz",
+          "streamCount": 17,
+          "secondsPlayed": 3889
+        },
+        {
+          "name": "Hum To Bhai Jaise Hain",
+          "streamCount": 11,
+          "secondsPlayed": 2696
+        },
+        {
+          "name": "Saaiyaan",
+          "streamCount": 10,
+          "secondsPlayed": 2093
+        },
+        {
+          "name": "Memories - Episode 05",
+          "streamCount": 10,
+          "secondsPlayed": 2313
+        },
+        {
+          "name": "Aika Dajiba",
+          "streamCount": 9,
+          "secondsPlayed": 1938
+        },
+        {
+          "name": "Kiya Kiya",
+          "streamCount": 8,
+          "secondsPlayed": 2040
+        },
+        {
+          "name": "Hanuman Chalisa (Lo-fi)",
+          "streamCount": 7,
+          "secondsPlayed": 1787
+        },
+        {
+          "name": "Titliaan",
+          "streamCount": 7,
+          "secondsPlayed": 1160
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "KK",
+          "streamCount": 35,
+          "secondsPlayed": 8004
+        },
+        {
+          "name": "Pritam",
+          "streamCount": 25,
+          "secondsPlayed": 5618
+        },
+        {
+          "name": "Vishal-Shekhar",
+          "streamCount": 21,
+          "secondsPlayed": 5288
+        },
+        {
+          "name": "Nucleya",
+          "streamCount": 17,
+          "secondsPlayed": 3138
+        },
+        {
+          "name": "Madan Mohan",
+          "streamCount": 14,
+          "secondsPlayed": 3389
+        },
+        {
+          "name": "Salim–Sulaiman",
+          "streamCount": 13,
+          "secondsPlayed": 2987
+        },
+        {
+          "name": "Arijit Singh",
+          "streamCount": 16,
+          "secondsPlayed": 3373
+        },
+        {
+          "name": "Javed Akhtar",
+          "streamCount": 35,
+          "secondsPlayed": 8677
+        },
+        {
+          "name": "Eddie Vedder",
+          "streamCount": 11,
+          "secondsPlayed": 2749
+        },
+        {
+          "name": "Vishal Dadlani",
+          "streamCount": 21,
+          "secondsPlayed": 5288
+        }
+      ],
+      "topGenres": [
+        {
+          "name": "bollywood",
+          "streamCount": 5,
+          "secondsPlayed": 1678
+        },
+        {
+          "name": "qawwali",
+          "streamCount": 1,
+          "secondsPlayed": 420
+        },
+        {
+          "name": "love song",
+          "streamCount": 1,
+          "secondsPlayed": 383
+        },
+        {
+          "name": "hindi pop",
+          "streamCount": 1,
+          "secondsPlayed": 383
+        },
+        {
+          "name": "new romantic",
+          "streamCount": 1,
+          "secondsPlayed": 383
+        },
+        {
+          "name": "dance",
+          "streamCount": 1,
+          "secondsPlayed": 365
+        }
+      ],
+      "timeOfDayStats": [
+      ]
+    },
+    {
+      "date": "2024-09",
+      "streamCount": 152,
+      "secondsPlayed": 36105,
+      "topTracks": [
+        {
+          "name": "Dewak Kalji Re",
+          "streamCount": 17,
+          "secondsPlayed": 4066
+        },
+        {
+          "name": "Haan Ke Haan",
+          "streamCount": 10,
+          "secondsPlayed": 1876
+        },
+        {
+          "name": "Nastes Ghari Tu",
+          "streamCount": 9,
+          "secondsPlayed": 2405
+        },
+        {
+          "name": "Suru Ru",
+          "streamCount": 8,
+          "secondsPlayed": 2128
+        },
+        {
+          "name": "Hanuman Chalisa (Lo-fi)",
+          "streamCount": 7,
+          "secondsPlayed": 1831
+        },
+        {
+          "name": "Love Me Again",
+          "streamCount": 7,
+          "secondsPlayed": 1506
+        },
+        {
+          "name": "Hum To Bhai Jaise Hain",
+          "streamCount": 6,
+          "secondsPlayed": 1544
+        },
+        {
+          "name": "Lallati Bhandar - Ambabaicha Gondhal",
+          "streamCount": 6,
+          "secondsPlayed": 1571
+        },
+        {
+          "name": "Aadiyilalo",
+          "streamCount": 6,
+          "secondsPlayed": 1479
+        },
+        {
+          "name": "Airaneechya Deva Tula",
+          "streamCount": 5,
+          "secondsPlayed": 964
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Ajay Gogavale",
+          "streamCount": 25,
+          "secondsPlayed": 6122
+        },
+        {
+          "name": "Lata Mangeshkar",
+          "streamCount": 14,
+          "secondsPlayed": 2958
+        },
+        {
+          "name": "Rasraj Ji Maharaj",
+          "streamCount": 10,
+          "secondsPlayed": 2482
+        },
+        {
+          "name": "Sohail Sen",
+          "streamCount": 10,
+          "secondsPlayed": 1876
+        },
+        {
+          "name": "Sonu Nigam",
+          "streamCount": 10,
+          "secondsPlayed": 2636
+        },
+        {
+          "name": "Salil Kulkarni",
+          "streamCount": 9,
+          "secondsPlayed": 2405
+        },
+        {
+          "name": "John Newman",
+          "streamCount": 7,
+          "secondsPlayed": 1506
+        },
+        {
+          "name": "Ajay-Atul",
+          "streamCount": 6,
+          "secondsPlayed": 1571
+        },
+        {
+          "name": "Madan Mohan",
+          "streamCount": 6,
+          "secondsPlayed": 1544
+        },
+        {
+          "name": "Masala Coffee",
+          "streamCount": 6,
+          "secondsPlayed": 1479
+        }
+      ],
+      "topGenres": [
+      ],
+      "timeOfDayStats": [
+      ]
+    },
+    {
+      "date": "2024-08",
+      "streamCount": 69,
+      "secondsPlayed": 13466,
+      "topTracks": [
+        {
+          "name": "Dua",
+          "streamCount": 5,
+          "secondsPlayed": 1314
+        },
+        {
+          "name": "Big Dawgs",
+          "streamCount": 5,
+          "secondsPlayed": 649
+        },
+        {
+          "name": "Aghori",
+          "streamCount": 3,
+          "secondsPlayed": 570
+        },
+        {
+          "name": "Hanuman Chalisa (Lo-fi)",
+          "streamCount": 2,
+          "secondsPlayed": 512
+        },
+        {
+          "name": "Bajrang Baan-Lofi",
+          "streamCount": 2,
+          "secondsPlayed": 427
+        },
+        {
+          "name": "Dastaan - E - Om Shanti Om",
+          "streamCount": 2,
+          "secondsPlayed": 742
+        },
+        {
+          "name": "Ali Maula",
+          "streamCount": 2,
+          "secondsPlayed": 558
+        },
+        {
+          "name": "Riders on the Storm",
+          "streamCount": 2,
+          "secondsPlayed": 260
+        },
+        {
+          "name": "Dil Ke Jharokhe Mein",
+          "streamCount": 2,
+          "secondsPlayed": 796
+        },
+        {
+          "name": "Hum To Bhai Jaise Hain",
+          "streamCount": 2,
+          "secondsPlayed": 552
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Salim–Sulaiman",
+          "streamCount": 8,
+          "secondsPlayed": 1946
+        },
+        {
+          "name": "Hanumankind",
+          "streamCount": 5,
+          "secondsPlayed": 649
+        },
+        {
+          "name": "Sukhwinder Singh",
+          "streamCount": 7,
+          "secondsPlayed": 1643
+        },
+        {
+          "name": "Rasraj Ji Maharaj",
+          "streamCount": 4,
+          "secondsPlayed": 939
+        },
+        {
+          "name": "Gurbax",
+          "streamCount": 3,
+          "secondsPlayed": 570
+        },
+        {
+          "name": "AP Dhillon",
+          "streamCount": 3,
+          "secondsPlayed": 445
+        },
+        {
+          "name": "Shaan",
+          "streamCount": 3,
+          "secondsPlayed": 779
+        },
+        {
+          "name": "Suresh Wadkar",
+          "streamCount": 3,
+          "secondsPlayed": 690
+        },
+        {
+          "name": "Kalmi",
+          "streamCount": 5,
+          "secondsPlayed": 649
+        },
+        {
+          "name": "The Doors",
+          "streamCount": 3,
+          "secondsPlayed": 294
+        }
+      ],
+      "topGenres": [
+      ],
+      "timeOfDayStats": [
+      ]
+    },
+    {
+      "date": "2024-07",
+      "streamCount": 149,
+      "secondsPlayed": 31625,
+      "topTracks": [
+        {
+          "name": "Excuses",
+          "streamCount": 8,
+          "secondsPlayed": 1200
+        },
+        {
+          "name": "Hum To Bhai Jaise Hain",
+          "streamCount": 5,
+          "secondsPlayed": 1349
+        },
+        {
+          "name": "Hanuman Chalisa (Lo-fi)",
+          "streamCount": 5,
+          "secondsPlayed": 1224
+        },
+        {
+          "name": "Bajrang Baan-Lofi",
+          "streamCount": 5,
+          "secondsPlayed": 1124
+        },
+        {
+          "name": "Dum Dum",
+          "streamCount": 5,
+          "secondsPlayed": 1269
+        },
+        {
+          "name": "Hass Hass",
+          "streamCount": 4,
+          "secondsPlayed": 608
+        },
+        {
+          "name": "Dua",
+          "streamCount": 4,
+          "secondsPlayed": 1006
+        },
+        {
+          "name": "Aadiyilalo",
+          "streamCount": 4,
+          "secondsPlayed": 1009
+        },
+        {
+          "name": "Bheegi Si Bhaagi Si",
+          "streamCount": 4,
+          "secondsPlayed": 776
+        },
+        {
+          "name": "Mehmaan",
+          "streamCount": 4,
+          "secondsPlayed": 680
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "A.R. Rahman",
+          "streamCount": 16,
+          "secondsPlayed": 3513
+        },
+        {
+          "name": "AP Dhillon",
+          "streamCount": 13,
+          "secondsPlayed": 2128
+        },
+        {
+          "name": "Salim–Sulaiman",
+          "streamCount": 12,
+          "secondsPlayed": 3036
+        },
+        {
+          "name": "Rasraj Ji Maharaj",
+          "streamCount": 12,
+          "secondsPlayed": 2481
+        },
+        {
+          "name": "Sukhwinder Singh",
+          "streamCount": 12,
+          "secondsPlayed": 3527
+        },
+        {
+          "name": "Shaan",
+          "streamCount": 8,
+          "secondsPlayed": 2063
+        },
+        {
+          "name": "Pritam",
+          "streamCount": 6,
+          "secondsPlayed": 946
+        },
+        {
+          "name": "Gaurav Raina",
+          "streamCount": 6,
+          "secondsPlayed": 909
+        },
+        {
+          "name": "Mohit Chauhan",
+          "streamCount": 9,
+          "secondsPlayed": 2222
+        },
+        {
+          "name": "Madan Mohan",
+          "streamCount": 5,
+          "secondsPlayed": 1349
+        }
+      ],
+      "topGenres": [
+      ],
+      "timeOfDayStats": [
+      ]
+    },
+    {
+      "date": "2024-06",
+      "streamCount": 164,
+      "secondsPlayed": 34710,
+      "topTracks": [
+        {
+          "name": "The Night We Met",
+          "streamCount": 12,
+          "secondsPlayed": 2339
+        },
+        {
+          "name": "Bajrang Baan-Lofi",
+          "streamCount": 12,
+          "secondsPlayed": 2297
+        },
+        {
+          "name": "Ab To Forever",
+          "streamCount": 8,
+          "secondsPlayed": 2474
+        },
+        {
+          "name": "Bin Tere Sanam (From \"Yaara Dildara\")",
+          "streamCount": 7,
+          "secondsPlayed": 2208
+        },
+        {
+          "name": "Suru Ru",
+          "streamCount": 6,
+          "secondsPlayed": 1498
+        },
+        {
+          "name": "Jaaneman Jaaneman Tere Do Nain",
+          "streamCount": 6,
+          "secondsPlayed": 1770
+        },
+        {
+          "name": "Hass Hass",
+          "streamCount": 5,
+          "secondsPlayed": 603
+        },
+        {
+          "name": "So In Love",
+          "streamCount": 5,
+          "secondsPlayed": 663
+        },
+        {
+          "name": "Succession (Main Title Theme)",
+          "streamCount": 4,
+          "secondsPlayed": 426
+        },
+        {
+          "name": "Varaha Roopam Daiva Va Rishtam",
+          "streamCount": 4,
+          "secondsPlayed": 1131
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Lord Huron",
+          "streamCount": 12,
+          "secondsPlayed": 2339
+        },
+        {
+          "name": "Rasraj Ji Maharaj",
+          "streamCount": 12,
+          "secondsPlayed": 2297
+        },
+        {
+          "name": "Vishal-Shekhar",
+          "streamCount": 9,
+          "secondsPlayed": 2780
+        },
+        {
+          "name": "Diljit Dosanjh",
+          "streamCount": 9,
+          "secondsPlayed": 1279
+        },
+        {
+          "name": "Udit Narayan",
+          "streamCount": 10,
+          "secondsPlayed": 3430
+        },
+        {
+          "name": "Gaurav Raina",
+          "streamCount": 8,
+          "secondsPlayed": 1134
+        },
+        {
+          "name": "Sonu Nigam",
+          "streamCount": 9,
+          "secondsPlayed": 2538
+        },
+        {
+          "name": "KK",
+          "streamCount": 13,
+          "secondsPlayed": 3195
+        },
+        {
+          "name": "K. J. Yesudas",
+          "streamCount": 6,
+          "secondsPlayed": 1770
+        },
+        {
+          "name": "AP Dhillon",
+          "streamCount": 6,
+          "secondsPlayed": 1088
+        }
+      ],
+      "topGenres": [
+      ],
+      "timeOfDayStats": [
+      ]
+    },
+    {
+      "date": "2024-05",
+      "streamCount": 175,
+      "secondsPlayed": 35389,
+      "topTracks": [
+        {
+          "name": "Chakna Chakna",
+          "streamCount": 14,
+          "secondsPlayed": 4254
+        },
+        {
+          "name": "Pyar Kiya To Darna Kya",
+          "streamCount": 11,
+          "secondsPlayed": 3199
+        },
+        {
+          "name": "Yeh Aashiqui",
+          "streamCount": 11,
+          "secondsPlayed": 2381
+        },
+        {
+          "name": "Suru Ru",
+          "streamCount": 9,
+          "secondsPlayed": 1697
+        },
+        {
+          "name": "Tilasmi Bahein (From Heeramandi)",
+          "streamCount": 9,
+          "secondsPlayed": 1233
+        },
+        {
+          "name": "Hass Hass",
+          "streamCount": 8,
+          "secondsPlayed": 1117
+        },
+        {
+          "name": "Jind Mahi",
+          "streamCount": 8,
+          "secondsPlayed": 1428
+        },
+        {
+          "name": "Tani Sun La (From \"Very Parivarik\")",
+          "streamCount": 8,
+          "secondsPlayed": 1055
+        },
+        {
+          "name": "Genda Phool (From \"Delhi-6\")",
+          "streamCount": 8,
+          "secondsPlayed": 1308
+        },
+        {
+          "name": "Dewak Kalji Re",
+          "streamCount": 7,
+          "secondsPlayed": 1942
+        }
+      ],
+      "topArtists": [
+        {
+          "name": "Diljit Dosanjh",
+          "streamCount": 20,
+          "secondsPlayed": 3216
+        },
+        {
+          "name": "Himesh Reshammiya",
+          "streamCount": 14,
+          "secondsPlayed": 4254
+        },
+        {
+          "name": "Sonu Nigam",
+          "streamCount": 13,
+          "secondsPlayed": 3163
+        },
+        {
+          "name": "The Wedding Filmer",
+          "streamCount": 12,
+          "secondsPlayed": 2414
+        },
+        {
+          "name": "Lata Mangeshkar",
+          "streamCount": 11,
+          "secondsPlayed": 3199
+        },
+        {
+          "name": "Sanjay Leela Bhansali",
+          "streamCount": 11,
+          "secondsPlayed": 1533
+        },
+        {
+          "name": "Sharmistha Chatterjee",
+          "streamCount": 20,
+          "secondsPlayed": 3614
+        },
+        {
+          "name": "Rekha Bhardwaj",
+          "streamCount": 8,
+          "secondsPlayed": 1308
+        },
+        {
+          "name": "Vaibhav Bundhoo",
+          "streamCount": 8,
+          "secondsPlayed": 1055
+        },
+        {
+          "name": "Ajay Gogavale",
+          "streamCount": 7,
+          "secondsPlayed": 1942
+        }
+      ],
+      "topGenres": [
+      ],
+      "timeOfDayStats": [
+      ]
+    }
+  ],
+  "highlights": [
+    {
+      "date": "2025-03-30",
+      "highlightType": "ON_THIS_PERIOD",
+      "onThisPeriodHighlight": {
+        "entity": "Husn",
+        "nostalgiaPeriod": "YEAR",
+        "nostalgiaUnitsAgo": 1
+      }
+    },
+    {
+      "date": "2025-03-23",
+      "highlightType": "UNLIKE_COMBINATION",
+      "unlikeCombinationHighlight": {
+        "firstEntity": "M. M. Keeravaani",
+        "secondEntity": "AFROJACK"
+      }
+    },
+    {
+      "date": "2025-03-16",
+      "highlightType": "STREAKS",
+      "streaksHighlight": {
+        "entity": "Amitabh Bhattacharya",
+        "dayStreaks": 5
+      }
+    },
+    {
+      "date": "2025-03-09",
+      "highlightType": "FANS_LIKE_YOU",
+      "fansLikeYouHighlight": {
+        "entity": "Afsos",
+        "country": "IN",
+        "position": 7,
+        "previousPosition": 8,
+        "numberOfListeners": 1631679
+      }
+    },
+    {
+      "date": "2025-03-02",
+      "highlightType": "PROPORTION_LISTENING_ENTITY",
+      "proportionListeningHighlight": {
+        "entity": "Pritam",
+        "listeningPercentage": 28.733881059905325
+      }
+    },
+    {
+      "date": "2025-03",
+      "highlightType": "ON_REPEAT",
+      "onRepeatHighlight": {
+        "entity": "Re Manva",
+        "streamCount": 60
+      }
+    },
+    {
+      "date": "2025-02-23",
+      "highlightType": "YOU_STAND_OUT",
+      "youStandOutHighlight": {
+        "entity": "Kishore Kumar",
+        "country": "IN",
+        "secondsPlayed": 12241,
+        "marketAvgSecondsPlayed": 1194.5874
+      }
+    },
+    {
+      "date": "2025-02-16",
+      "highlightType": "MILESTONE",
+      "multiEntityMilestoneHighlight": {
+        "entities": [
+          "George Ezra",
+          "Indo Warehouse",
+          "VIZANO",
+          "Bahena",
+          "Monta Re",
+          "Cassy O'",
+          "Budapest",
+          "Oh Re Taal Mile Nadi Ke Jal Mein",
+          "Awari"
+        ],
+        "milestoneListeningSeconds": 33740
+      }
+    },
+    {
+      "date": "2025-02-09",
+      "highlightType": "ON_REPEAT",
+      "onRepeatHighlight": {
+        "entity": "Nadiya Chale Chale Re Dhara",
+        "streamCount": 17
+      }
+    },
+    {
+      "date": "2025-02-02",
+      "highlightType": "ON_THIS_PERIOD",
+      "onThisPeriodHighlight": {
+        "entity": "Haiwaan",
+        "nostalgiaPeriod": "YEAR",
+        "nostalgiaUnitsAgo": 1
+      }
+    },
+    {
+      "date": "2025-02",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "VIZANO",
+        "topPercentile": 0.0047736372035725285
+      }
+    },
+    {
+      "date": "2025-01-26",
+      "highlightType": "STREAKS",
+      "streaksHighlight": {
+        "entity": "Navarasam",
+        "dayStreaks": 4
+      }
+    },
+    {
+      "date": "2025-01-19",
+      "highlightType": "ON_REPEAT",
+      "onRepeatHighlight": {
+        "entity": "Navarasam",
+        "streamCount": 19
+      }
+    },
+    {
+      "date": "2025-01-12",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "Thaikkudam Bridge",
+        "topPercentile": 0.13890728038348474
+      }
+    },
+    {
+      "date": "2025-01",
+      "highlightType": "UNLIKE_COMBINATION",
+      "unlikeCombinationHighlight": {
+        "firstEntity": "Damiano David",
+        "secondEntity": "DJ H"
+      }
+    },
+    {
+      "date": "2024-12-29",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "Jaane Kya Dhoondta Hai - From \"Sur (The Melody Of Life)\"",
+        "topPercentile": 0.032984774813674504
+      }
+    },
+    {
+      "date": "2024-12-22",
+      "highlightType": "PROPORTION_LISTENING_ENTITY",
+      "proportionListeningHighlight": {
+        "entity": "Palash Sen",
+        "listeningPercentage": 27.328267024288483
+      }
+    },
+    {
+      "date": "2024-12-15",
+      "highlightType": "STREAKS",
+      "streaksHighlight": {
+        "entity": "El Toro Y La Rana - Kahani's Dholna Mix",
+        "dayStreaks": 3
+      }
+    },
+    {
+      "date": "2024-12-08",
+      "highlightType": "ON_REPEAT",
+      "onRepeatHighlight": {
+        "entity": "Temperature",
+        "streamCount": 29
+      }
+    },
+    {
+      "date": "2024-12-01",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "Kahani",
+        "topPercentile": 0.1922036484705556
+      }
+    },
+    {
+      "date": "2024-12",
+      "highlightType": "ON_THIS_PERIOD",
+      "onThisPeriodHighlight": {
+        "entity": "Succession (Main Title Theme)",
+        "nostalgiaPeriod": "YEAR",
+        "nostalgiaUnitsAgo": 1
+      }
+    },
+    {
+      "date": "2024-11-24",
+      "highlightType": "UNLIKE_COMBINATION",
+      "unlikeCombinationHighlight": {
+        "firstEntity": "Sex on Fire",
+        "secondEntity": "Halo Re"
+      }
+    },
+    {
+      "date": "2024-11-17",
+      "highlightType": "PROPORTION_LISTENING_ENTITY",
+      "proportionListeningHighlight": {
+        "entity": "Lata Mangeshkar",
+        "listeningPercentage": 36.69535118503918
+      }
+    },
+    {
+      "date": "2024-11-10",
+      "highlightType": "STREAKS",
+      "streaksHighlight": {
+        "entity": "Kings of Leon",
+        "dayStreaks": 5
+      }
+    },
+    {
+      "date": "2024-11-03",
+      "highlightType": "ON_REPEAT",
+      "onRepeatHighlight": {
+        "entity": "Bholenath - A Love Story",
+        "streamCount": 9
+      }
+    },
+    {
+      "date": "2024-11",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "Juss",
+        "topPercentile": 0.005654598069257458
+      }
+    },
+    {
+      "date": "2024-10-27",
+      "highlightType": "YOU_STAND_OUT",
+      "youStandOutHighlight": {
+        "entity": "KK",
+        "country": "IN",
+        "secondsPlayed": 4612,
+        "marketAvgSecondsPlayed": 713.06573
+      }
+    },
+    {
+      "date": "2024-10-20",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "Nucleya",
+        "topPercentile": 0.008421264344269928
+      }
+    },
+    {
+      "date": "2024-10-13",
+      "highlightType": "STREAKS",
+      "streaksHighlight": {
+        "entity": "Do U Know",
+        "dayStreaks": 3
+      }
+    },
+    {
+      "date": "2024-10-06",
+      "highlightType": "UNLIKE_COMBINATION",
+      "unlikeCombinationHighlight": {
+        "firstEntity": "Lata Mangeshkar",
+        "secondEntity": "Chance the Rapper"
+      }
+    },
+    {
+      "date": "2024-10",
+      "highlightType": "ON_THIS_PERIOD",
+      "onThisPeriodHighlight": {
+        "entity": "Roshay",
+        "nostalgiaPeriod": "YEAR",
+        "nostalgiaUnitsAgo": 1
+      }
+    },
+    {
+      "date": "2024-09-29",
+      "highlightType": "ON_REPEAT",
+      "onRepeatHighlight": {
+        "entity": "Love Me Again",
+        "streamCount": 7
+      }
+    },
+    {
+      "date": "2024-09-22",
+      "highlightType": "TOP_LISTENER",
+      "topListenerHighlight": {
+        "entity": "Jaaneman Jaaneman Tere Do Nain",
+        "topPercentile": 0.03623066859002315
+      }
+    },
+    {
+      "date": "2024-09-15",
+      "highlightType": "FANS_LIKE_YOU",
+      "fansLikeYouHighlight": {
+        "entity": "Haan Ke Haan",
+        "country": "IN",
+        "position": 12,
+        "previousPosition": 9,
+        "numberOfListeners": 1846794
+      }
+    }
+  ]
+}

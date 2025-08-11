@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import List, Dict, Any
 from spotify_client import SpotifyClient
 from openai_client import OpenAIClient
+from data_processor import DataProcessor
 from logging_config import (
     get_logger,
     log_function_entry,
@@ -36,6 +37,10 @@ class SpotifyAgentCLI:
         self.exit_commands = ['exit', 'quit', 'bye', 'goodbye']
         self.session_start_time = datetime.now()
         
+        # Initialize data processor for historical data
+        self.data_processor = None
+        self.historical_data = None
+        
     def initialize_clients(self):
         """Initialize Spotify and OpenAI clients"""
         try:
@@ -51,6 +56,18 @@ class SpotifyAgentCLI:
                 return False
             
             print("✅ OpenAI connection successful!")
+            
+            # Initialize data processor and load historical data FIRST
+            print("📊 Loading historical listening data...")
+            try:
+                self.data_processor = DataProcessor()
+                self.historical_data = self.data_processor.load_all_data()
+                print("✅ Historical data loaded successfully!")
+            except Exception as e:
+                print(f"⚠️  Historical data unavailable: {e}")
+                print("🎵 Continuing without historical data...")
+                self.data_processor = None
+                self.historical_data = None
             
             # Initialize Spotify Client (optional)
             print("📡 Connecting to Spotify...")
@@ -83,8 +100,8 @@ class SpotifyAgentCLI:
             print("\n📊 Loading your Spotify profile...")
             
             # Get recent tracks and top artists
-            recent_tracks = self.spotify_client.get_recent_tracks(limit=50)
-            top_artists = self.spotify_client.get_top_artists(limit=50)
+            recent_tracks = self.spotify_client.get_recent_tracks(limit=30)
+            top_artists = self.spotify_client.get_top_artists(limit=30)
             
             if recent_tracks or top_artists:
                 context_prompt = self._format_spotify_context(recent_tracks, top_artists)
@@ -97,6 +114,20 @@ class SpotifyAgentCLI:
                 
                 print("✅ Spotify context loaded!")
                 print(f"📋 Found {len(recent_tracks)} recent tracks and {len(top_artists)} top artists")
+                
+                # Show historical data info
+                if self.data_processor and self.historical_data:
+                    try:
+                        data_2024 = self.data_processor.load_2024_chunk(limit=30)
+                        track_count = len(data_2024['recent_tracks'].split(", ")) if data_2024['recent_tracks'] else 0
+                        artist_count = len(data_2024['top_artists'].split(", ")) if data_2024['top_artists'] else 0
+                        genre_count = len(data_2024['top_genres'].split(", ")) if data_2024['top_genres'] else 0
+                        print(f"📊 Historical data: {track_count} tracks, {artist_count} artists, {genre_count} genres from 2024")
+                        
+
+                        
+                    except Exception as e:
+                        logger.error(f"Error displaying historical data info: {e}")
             else:
                 print("⚠️  No Spotify data available")
                 
@@ -108,25 +139,39 @@ class SpotifyAgentCLI:
         """Format Spotify data for context"""
         context_parts = []
         
-        #if recent_tracks:
-        #    tracks_text = ", ".join([f"{track['name']} by {track['artist']}" for track in recent_tracks])
-        #    context_parts.append(f"Recent tracks: {tracks_text}")
-        
+        # Current Spotify data
         if recent_tracks:
-        # Create a dictionary to track unique tracks using track+artist as key
+            # Create a dictionary to track unique tracks using track+artist as key
             unique_tracks = {}
             for track in recent_tracks:
                 track_key = f"{track['name']} by {track['artist']}"
                 if track_key not in unique_tracks:
                     unique_tracks[track_key] = track
-        
-        # Join only the unique tracks
+            
+            # Join only the unique tracks
             tracks_text = ", ".join(unique_tracks.keys())
             context_parts.append(f"Recent tracks: {tracks_text}")
 
         if top_artists:
             artists_text = ", ".join([artist['name'] for artist in top_artists])
             context_parts.append(f"Top artists: {artists_text}")
+        
+        # Historical 2024 data
+        if self.data_processor and self.historical_data:
+            try:
+                data_2024 = self.data_processor.load_2024_chunk(limit=30)
+                
+                if data_2024['recent_tracks']:
+                    context_parts.append(f"2024 tracks: {data_2024['recent_tracks']}")
+                    
+                if data_2024['top_artists']:
+                    context_parts.append(f"2024 artists: {data_2024['top_artists']}")
+                    
+                if data_2024['top_genres']:
+                    context_parts.append(f"2024 genres: {data_2024['top_genres']}")
+                    
+            except Exception as e:
+                logger.error(f"Error loading 2024 data: {e}")
         
         return ". ".join(context_parts)
     
