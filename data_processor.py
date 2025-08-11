@@ -664,7 +664,10 @@ class DataProcessor:
         genre_stats = defaultdict(lambda: {
             'stream_count': 0,
             'total_seconds': 0,
-            'months_active': set()
+            'months_active': set(),
+            'avg_engagement': 0,
+            'peak_month': '',
+            'peak_streams': 0
         })
         
         # From sound capsule
@@ -672,22 +675,53 @@ class DataProcessor:
             month = stat.get('date', '')
             for genre in stat.get('topGenres', []):
                 genre_name = genre['name']
-                genre_stats[genre_name]['stream_count'] += genre.get('streamCount', 0)
-                genre_stats[genre_name]['total_seconds'] += genre.get('secondsPlayed', 0)
+                stream_count = genre.get('streamCount', 0)
+                seconds_played = genre.get('secondsPlayed', 0)
+                
+                genre_stats[genre_name]['stream_count'] += stream_count
+                genre_stats[genre_name]['total_seconds'] += seconds_played
+                
                 if month:
                     genre_stats[genre_name]['months_active'].add(month)
+                
+                # Track peak month for each genre
+                if stream_count > genre_stats[genre_name]['peak_streams']:
+                    genre_stats[genre_name]['peak_streams'] = stream_count
+                    genre_stats[genre_name]['peak_month'] = month
         
-        # Convert sets to lists for JSON serialization
+        # Calculate additional metrics
         for genre in genre_stats:
+            if genre_stats[genre]['stream_count'] > 0:
+                genre_stats[genre]['avg_engagement'] = genre_stats[genre]['total_seconds'] / genre_stats[genre]['stream_count']
             genre_stats[genre]['months_active'] = list(genre_stats[genre]['months_active'])
+            genre_stats[genre]['consistency_score'] = len(genre_stats[genre]['months_active'])
         
-        # Sort by total seconds
-        sorted_genres = sorted(genre_stats.items(), key=lambda x: x[1]['total_seconds'], reverse=True)
+        # Sort by different metrics
+        sorted_by_time = sorted(genre_stats.items(), key=lambda x: x[1]['total_seconds'], reverse=True)
+        sorted_by_streams = sorted(genre_stats.items(), key=lambda x: x[1]['stream_count'], reverse=True)
+        sorted_by_consistency = sorted(genre_stats.items(), key=lambda x: x[1]['consistency_score'], reverse=True)
+        sorted_by_engagement = sorted(genre_stats.items(), key=lambda x: x[1]['avg_engagement'], reverse=True)
+        
+        # Genre evolution analysis
+        genre_evolution = self._analyze_genre_evolution()
+        
+        # Genre combinations analysis
+        genre_combinations = self._analyze_genre_combinations()
         
         return {
-            'by_total_time': sorted_genres[:20],
-            'by_stream_count': sorted(genre_stats.items(), key=lambda x: x[1]['stream_count'], reverse=True)[:20],
-            'by_consistency': sorted(genre_stats.items(), key=lambda x: len(x[1]['months_active']), reverse=True)[:20]
+            'by_total_time': sorted_by_time[:20],
+            'by_stream_count': sorted_by_streams[:20],
+            'by_consistency': sorted_by_consistency[:20],
+            'by_engagement': sorted_by_engagement[:20],
+            'evolution': genre_evolution,
+            'combinations': genre_combinations,
+            'summary': {
+                'total_genres': len(genre_stats),
+                'most_consistent_genre': sorted_by_consistency[0][0] if sorted_by_consistency else None,
+                'most_engaged_genre': sorted_by_engagement[0][0] if sorted_by_engagement else None,
+                'total_genre_streams': sum(genre_stats[g]['stream_count'] for g in genre_stats),
+                'total_genre_time': sum(genre_stats[g]['total_seconds'] for g in genre_stats)
+            }
         }
     
     def _analyze_listening_patterns(self) -> Dict[str, Any]:
@@ -737,6 +771,133 @@ class DataProcessor:
             patterns['avg_session_length'] = sum(patterns['session_lengths']) / len(patterns['session_lengths'])
         
         return dict(patterns)
+    
+    def _analyze_genre_evolution(self) -> Dict[str, Any]:
+        """
+        Analyze how genre preferences evolved over time
+        
+        Returns:
+            Genre evolution analysis
+        """
+        if not self.sound_capsule.get('stats'):
+            return {}
+        
+        # Sort stats by date
+        sorted_stats = sorted(self.sound_capsule['stats'], key=lambda x: x.get('date', ''))
+        
+        evolution = {
+            'monthly_genres': {},
+            'emerging_genres': [],
+            'declining_genres': [],
+            'stable_genres': []
+        }
+        
+        # Track genres by month
+        all_genres = set()
+        monthly_genre_data = {}
+        
+        for stat in sorted_stats:
+            month = stat.get('date', '')
+            if not month:
+                continue
+                
+            monthly_genres = {}
+            for genre in stat.get('topGenres', []):
+                genre_name = genre['name']
+                all_genres.add(genre_name)
+                monthly_genres[genre_name] = {
+                    'stream_count': genre.get('streamCount', 0),
+                    'seconds_played': genre.get('secondsPlayed', 0)
+                }
+            
+            monthly_genre_data[month] = monthly_genres
+            evolution['monthly_genres'][month] = monthly_genres
+        
+        # Analyze genre trends
+        if len(sorted_stats) >= 2:
+            first_month = sorted_stats[0].get('date', '')
+            last_month = sorted_stats[-1].get('date', '')
+            
+            first_genres = set(monthly_genre_data.get(first_month, {}).keys())
+            last_genres = set(monthly_genre_data.get(last_month, {}).keys())
+            
+            # Emerging genres (new in recent months)
+            evolution['emerging_genres'] = list(last_genres - first_genres)
+            
+            # Declining genres (present in early months but not recent)
+            evolution['declining_genres'] = list(first_genres - last_genres)
+            
+            # Stable genres (present throughout)
+            evolution['stable_genres'] = list(first_genres & last_genres)
+        
+        return evolution
+    
+    def _analyze_genre_combinations(self) -> Dict[str, Any]:
+        """
+        Analyze genre combinations and co-occurrence patterns
+        
+        Returns:
+            Genre combinations analysis
+        """
+        if not self.sound_capsule.get('stats'):
+            return {}
+        
+        combinations = {
+            'frequent_pairs': [],
+            'genre_clusters': {},
+            'monthly_combinations': {}
+        }
+        
+        # Analyze genre pairs within each month
+        genre_pairs = Counter()
+        
+        for stat in self.sound_capsule.get('stats', []):
+            month = stat.get('date', '')
+            genres = [g['name'] for g in stat.get('topGenres', [])]
+            
+            # Find all pairs of genres in this month
+            for i in range(len(genres)):
+                for j in range(i + 1, len(genres)):
+                    pair = tuple(sorted([genres[i], genres[j]]))
+                    genre_pairs[pair] += 1
+            
+            combinations['monthly_combinations'][month] = genres
+        
+        # Find most frequent genre pairs
+        combinations['frequent_pairs'] = [
+            {'genres': list(pair), 'co_occurrence_count': count}
+            for pair, count in genre_pairs.most_common(10)
+        ]
+        
+        # Identify genre clusters (genres that often appear together)
+        genre_connections = defaultdict(set)
+        for pair, count in genre_pairs.items():
+            if count >= 2:  # Only consider pairs that appear in at least 2 months
+                genre_connections[pair[0]].add(pair[1])
+                genre_connections[pair[1]].add(pair[0])
+        
+        # Find clusters
+        visited = set()
+        clusters = []
+        
+        for genre in genre_connections:
+            if genre not in visited:
+                cluster = set()
+                stack = [genre]
+                
+                while stack:
+                    current = stack.pop()
+                    if current not in visited:
+                        visited.add(current)
+                        cluster.add(current)
+                        stack.extend(genre_connections[current])
+                
+                if len(cluster) > 1:  # Only include clusters with multiple genres
+                    clusters.append(list(cluster))
+        
+        combinations['genre_clusters'] = clusters
+        
+        return combinations
     
     def _analyze_engagement(self) -> Dict[str, Any]:
         """
@@ -895,7 +1056,12 @@ class DataProcessor:
                 },
                 'sound_capsule': {
                     'months': len(self.sound_capsule.get('stats', [])),
-                    'highlights': len(self.sound_capsule.get('highlights', []))
+                    'highlights': len(self.sound_capsule.get('highlights', [])),
+                    'total_genres': len(set(
+                        genre['name'] 
+                        for stat in self.sound_capsule.get('stats', []) 
+                        for genre in stat.get('topGenres', [])
+                    ))
                 },
                 'library': {
                     'tracks': len(self.library.get('tracks', [])),
@@ -905,10 +1071,118 @@ class DataProcessor:
                 }
             },
             'total_listening_time': sum(record['secondsPlayed'] for record in self.streaming_history) if self.streaming_history else 0,
+            'genre_insights': self._get_genre_summary(),
             'processing_timestamp': datetime.now().isoformat()
         }
         
         return summary
+    
+    def _get_genre_summary(self) -> Dict[str, Any]:
+        """
+        Generate a summary of genre insights
+        
+        Returns:
+            Genre summary dictionary
+        """
+        if not self.sound_capsule.get('stats'):
+            return {}
+        
+        # Collect all genres
+        all_genres = set()
+        genre_monthly_data = defaultdict(list)
+        
+        for stat in self.sound_capsule.get('stats', []):
+            month = stat.get('date', '')
+            for genre in stat.get('topGenres', []):
+                genre_name = genre['name']
+                all_genres.add(genre_name)
+                genre_monthly_data[genre_name].append({
+                    'month': month,
+                    'stream_count': genre.get('streamCount', 0),
+                    'seconds_played': genre.get('secondsPlayed', 0)
+                })
+        
+        # Calculate genre insights
+        genre_insights = {
+            'total_unique_genres': len(all_genres),
+            'most_consistent_genres': [],
+            'genre_diversity_score': 0,
+            'top_genres_by_month': {},
+            'genre_trends': {}
+        }
+        
+        # Find most consistent genres (appear in most months)
+        genre_consistency = {}
+        for genre, monthly_data in genre_monthly_data.items():
+            consistency = len(monthly_data)
+            genre_consistency[genre] = consistency
+        
+        most_consistent = sorted(genre_consistency.items(), key=lambda x: x[1], reverse=True)
+        genre_insights['most_consistent_genres'] = [
+            {'genre': genre, 'months_active': count}
+            for genre, count in most_consistent[:5]
+        ]
+        
+        # Calculate genre diversity (how many different genres per month on average)
+        monthly_genre_counts = []
+        for stat in self.sound_capsule.get('stats', []):
+            genres_in_month = len(stat.get('topGenres', []))
+            monthly_genre_counts.append(genres_in_month)
+        
+        if monthly_genre_counts:
+            genre_insights['genre_diversity_score'] = sum(monthly_genre_counts) / len(monthly_genre_counts)
+        
+        # Top genres by month
+        for stat in self.sound_capsule.get('stats', []):
+            month = stat.get('date', '')
+            top_genre = None
+            max_streams = 0
+            
+            for genre in stat.get('topGenres', []):
+                if genre.get('streamCount', 0) > max_streams:
+                    max_streams = genre.get('streamCount', 0)
+                    top_genre = genre['name']
+            
+            if top_genre:
+                genre_insights['top_genres_by_month'][month] = top_genre
+        
+        # Genre trends (which genres are growing/declining)
+        if len(self.sound_capsule.get('stats', [])) >= 2:
+            sorted_stats = sorted(self.sound_capsule['stats'], key=lambda x: x.get('date', ''))
+            first_month = sorted_stats[0].get('date', '')
+            last_month = sorted_stats[-1].get('date', '')
+            
+            first_month_genres = {g['name']: g.get('streamCount', 0) for g in sorted_stats[0].get('topGenres', [])}
+            last_month_genres = {g['name']: g.get('streamCount', 0) for g in sorted_stats[-1].get('topGenres', [])}
+            
+            growing_genres = []
+            declining_genres = []
+            
+            for genre in all_genres:
+                first_count = first_month_genres.get(genre, 0)
+                last_count = last_month_genres.get(genre, 0)
+                
+                if last_count > first_count:
+                    growing_genres.append({
+                        'genre': genre,
+                        'growth': last_count - first_count,
+                        'first_month': first_count,
+                        'last_month': last_count
+                    })
+                elif first_count > last_count:
+                    declining_genres.append({
+                        'genre': genre,
+                        'decline': first_count - last_count,
+                        'first_month': first_count,
+                        'last_month': last_count
+                    })
+            
+            genre_insights['genre_trends'] = {
+                'growing_genres': sorted(growing_genres, key=lambda x: x['growth'], reverse=True)[:5],
+                'declining_genres': sorted(declining_genres, key=lambda x: x['decline'], reverse=True)[:5]
+            }
+        
+        return genre_insights
     
     def _get_time_span(self, records: List[Dict[str, Any]]) -> Dict[str, str]:
         """
@@ -1010,6 +1284,33 @@ if __name__ == "__main__":
     print(f"Sound Capsule: {summary['data_sources']['sound_capsule']['months']} months")
     print(f"Library: {summary['data_sources']['library']['tracks']} tracks, {summary['data_sources']['library']['albums']} albums")
     print(f"Total Listening Time: {summary['total_listening_time'] / 3600:.1f} hours")
+    
+    # Print genre insights
+    if 'genre_insights' in summary:
+        genre_insights = summary['genre_insights']
+        print(f"\n🎵 Genre Analysis:")
+        print(f"Total Unique Genres: {genre_insights.get('total_unique_genres', 0)}")
+        print(f"Genre Diversity Score: {genre_insights.get('genre_diversity_score', 0):.1f} genres/month")
+        
+        if genre_insights.get('most_consistent_genres'):
+            print(f"Most Consistent Genre: {genre_insights['most_consistent_genres'][0]['genre']} ({genre_insights['most_consistent_genres'][0]['months_active']} months)")
+        
+        if genre_insights.get('genre_trends', {}).get('growing_genres'):
+            growing = genre_insights['genre_trends']['growing_genres'][0]
+            print(f"Fastest Growing Genre: {growing['genre']} (+{growing['growth']} streams)")
+        
+        if genre_insights.get('genre_trends', {}).get('declining_genres'):
+            declining = genre_insights['genre_trends']['declining_genres'][0]
+            print(f"Most Declining Genre: {declining['genre']} (-{declining['decline']} streams)")
+    
+    # Print top genres from analysis
+    if 'analysis' in data and 'genres' in data['analysis']:
+        genres = data['analysis']['genres']
+        if genres.get('by_total_time'):
+            print(f"\n🏆 Top Genres by Listening Time:")
+            for i, (genre, stats) in enumerate(genres['by_total_time'][:5], 1):
+                hours = stats['total_seconds'] / 3600
+                print(f"  {i}. {genre}: {hours:.1f} hours ({stats['stream_count']} streams)")
     
     # Export analysis
     processor.export_analysis()
